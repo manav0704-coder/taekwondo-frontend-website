@@ -1,0 +1,33 @@
+{
+  "files": {
+    "main.css": "/static/css/main.c5a3ccd1.css",
+    "main.js": "/static/js/main.a7ec2686.js",
+    "static/js/453.419a5d54.chunk.js": "/static/js/453.419a5d54.chunk.js",
+    "static/media/hybrron.mp4": "/static/media/hybrron.4941f71a2da8a07293a7.mp4",
+    "static/media/frame-1.png": "/static/media/frame-1.e724734dcea1d116db00.png",
+    "static/media/hero-1.png": "/static/media/hero-1.1bc06610fc7ef3c085ee.png",
+    "static/media/programs-hero.jpg": "/static/media/programs-hero.741491bb2bd6630f97d9.jpg",
+    "static/media/Belt-Promotion-Ceremony.jpg": "/static/media/Belt-Promotion-Ceremony.dc910b5ad2d61dbf7f78.jpg",
+    "static/media/Grandmaster-Rajesh-Deshmukh.jpg": "/static/media/Grandmaster-Rajesh-Deshmukh.049a5f99b3a4c8b52bae.jpg",
+    "static/media/State-Championship-Winners.jpg": "/static/media/State-Championship-Winners.52fbaa00c1cdc27c38ef.jpg",
+    "static/media/logo.png": "/static/media/logo.9160f3f514b6332c7991.png",
+    "static/media/Ellipse 2.png": "/static/media/Ellipse 2.b235de6178485905583a.png",
+    "static/media/children-program.jpeg": "/static/media/children-program.92992a0e222dab0ae0b3.jpeg",
+    "static/media/Ellipse 1.png": "/static/media/Ellipse 1.559e30b8f7be4dbfe8aa.png",
+    "static/media/Maharashtra-State-Taekwondo-Championship-2023.jpeg": "/static/media/Maharashtra-State-Taekwondo-Championship-2023.aa80f1feda112c3436d3.jpeg",
+    "static/media/instructor-program.jpeg": "/static/media/instructor-program.5935384ac00648ecc161.jpeg",
+    "static/media/adults-program.jpeg": "/static/media/adults-program.11157c39c0ad17f4ae4c.jpeg",
+    "static/media/Taekwondo-Summer-Training-Camp.jpeg": "/static/media/Taekwondo-Summer-Training-Camp.47175dfaa052309c037d.jpeg",
+    "static/media/teens-program.jpeg": "/static/media/teens-program.1c55e061d96f0dd01bc6.jpeg",
+    "static/media/black-belt-program.jpeg": "/static/media/black-belt-program.91bd51c35f8e959efb3c.jpeg",
+    "static/media/competition-program.jpeg": "/static/media/competition-program.3d5c6940e22b2f58cbbc.jpeg",
+    "index.html": "/index.html",
+    "main.c5a3ccd1.css.map": "/static/css/main.c5a3ccd1.css.map",
+    "main.a7ec2686.js.map": "/static/js/main.a7ec2686.js.map",
+    "453.419a5d54.chunk.js.map": "/static/js/453.419a5d54.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c5a3ccd1.css",
+    "static/js/main.a7ec2686.js"
+  ]
+}
