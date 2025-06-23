@@ -1,0 +1,31 @@
+# Tests
+__tests__
+test
+tests
+*.spec.*
+*.test.*
+
+# Build tools
+.travis.yml
+.jenkins.yml
+.codeclimate.yml
+
+# Linters
+.jscsrc
+.jshintrc
+.eslintrc*
+
+# Editor configs
+.idea
+.editorconfig
+.vscode
+
+# Development
+src/
+node_modules/
+.github/
+docs/
+.git/
+.gitignore
+*.log
+npm-debug.log* 
