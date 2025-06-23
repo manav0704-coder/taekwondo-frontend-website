@@ -19,7 +19,7 @@ const placeholderImages = {
 let childrenImg, teensImg, adultsImg, competitionImg, blackBeltImg, instructorImg, heroImg;
 try {
   childrenImg = require('../../assets/images/children-program.jpeg');
-  teensImg = require('../../assets/images/teens-program.jpeg');
+  teensImg = require('../../assets/images/teens-program.jpg');
   adultsImg = require('../../assets/images/adults-program.jpeg');
   competitionImg = require('../../assets/images/competition-program.jpeg');
   blackBeltImg = require('../../assets/images/black-belt-program.jpeg');
@@ -282,6 +282,11 @@ const Programs = () => {
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState(null);
+  // Add state for exam modals
+  const [aprilExamModalOpen, setAprilExamModalOpen] = useState(false);
+  const [mayExamModalOpen, setMayExamModalOpen] = useState(false);
+  const [febExamModalOpen, setFebExamModalOpen] = useState(false);
+  const [beltExamModalOpen, setBeltExamModalOpen] = useState(false);
   
   // Testimonials data - moved up before any usage
   const testimonials = [
@@ -488,98 +493,116 @@ const Programs = () => {
             
             <div className="space-y-4">
               {/* White Belt */}
-              <div className="bg-white p-5 rounded-lg shadow-md border-l-4 border-white">
-                <h3 className="font-bold mb-2 text-secondary">White Belt</h3>
-                <p className="text-secondary text-sm">Symbolizes innocence and the beginning of Taekwondo journey.</p>
+              <div className="bg-white p-5 rounded-lg shadow-md relative overflow-hidden">
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-white"></div>
+                <div className="pl-4">
+                  <h3 className="font-bold mb-2 text-secondary">White Belt</h3>
+                  <p className="text-secondary text-sm">Symbolizes innocence and the beginning of Taekwondo journey.</p>
+                </div>
               </div>
               
               {/* Yellow Belt */}
-              <div className="bg-white p-5 rounded-lg shadow-md border-l-4 border-yellow-400">
-                <h3 className="font-bold mb-2 text-secondary">Yellow Belt</h3>
-                <p className="text-secondary text-sm">Represents the earth from which a plant sprouts and takes root.</p>
+              <div className="bg-white p-5 rounded-lg shadow-md relative overflow-hidden">
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-yellow-400"></div>
+                <div className="pl-4">
+                  <h3 className="font-bold mb-2 text-secondary">Yellow Belt</h3>
+                  <p className="text-secondary text-sm">Represents the earth from which a plant sprouts and takes root.</p>
+                </div>
               </div>
               
               {/* Yellow Green Belt (Combined) */}
-              <div className="bg-white p-5 rounded-lg shadow-md overflow-hidden relative">
-                <div className="absolute left-0 top-0 h-full w-1">
+              <div className="bg-white p-5 rounded-lg shadow-md relative overflow-hidden">
+                <div className="absolute left-0 top-0 bottom-0 w-1">
                   <div className="h-1/2 bg-yellow-400"></div>
                   <div className="h-1/2 bg-green-500"></div>
                 </div>
-                <div className="border-l-3 p-5 ml-4">
+                <div className="pl-4">
                   <h3 className="font-bold mb-2 text-secondary">Yellow Green Belt</h3>
                   <p className="text-secondary text-sm">Represents the plant beginning to grow and develop strength.</p>
                 </div>
               </div>
               
               {/* Green Belt */}
-              <div className="bg-white p-5 rounded-lg shadow-md border-l-4 border-green-500">
-                <h3 className="font-bold mb-2 text-secondary">Green Belt</h3>
-                <p className="text-secondary text-sm">Symbolizes the plant's growth as Taekwondo skills develop.</p>
+              <div className="bg-white p-5 rounded-lg shadow-md relative overflow-hidden">
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-green-500"></div>
+                <div className="pl-4">
+                  <h3 className="font-bold mb-2 text-secondary">Green Belt</h3>
+                  <p className="text-secondary text-sm">Symbolizes the plant's growth as Taekwondo skills develop.</p>
+                </div>
               </div>
               
               {/* Green Blue Belt (Combined) */}
-              <div className="bg-white p-5 rounded-lg shadow-md overflow-hidden relative">
-                <div className="absolute left-0 top-0 h-full w-1">
+              <div className="bg-white p-5 rounded-lg shadow-md relative overflow-hidden">
+                <div className="absolute left-0 top-0 bottom-0 w-1">
                   <div className="h-1/2 bg-green-500"></div>
                   <div className="h-1/2 bg-blue-500"></div>
                 </div>
-                <div className="border-l-3 p-5 ml-4">
+                <div className="pl-4">
                   <h3 className="font-bold mb-2 text-secondary">Green Blue Belt</h3>
                   <p className="text-secondary text-sm">Signifies the transition from growing skills to advancing towards mastery.</p>
                 </div>
               </div>
               
               {/* Blue Belt */}
-              <div className="bg-white p-5 rounded-lg shadow-md border-l-4 border-blue-500">
-                <h3 className="font-bold mb-2 text-secondary">Blue Belt</h3>
-                <p className="text-secondary text-sm">Represents the sky, as the plant continues to grow toward it.</p>
+              <div className="bg-white p-5 rounded-lg shadow-md relative overflow-hidden">
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500"></div>
+                <div className="pl-4">
+                  <h3 className="font-bold mb-2 text-secondary">Blue Belt</h3>
+                  <p className="text-secondary text-sm">Represents the sky, as the plant continues to grow toward it.</p>
+                </div>
               </div>
               
               {/* Blue Red Belt (Combined) */}
-              <div className="bg-white p-5 rounded-lg shadow-md overflow-hidden relative">
-                <div className="absolute left-0 top-0 h-full w-1">
+              <div className="bg-white p-5 rounded-lg shadow-md relative overflow-hidden">
+                <div className="absolute left-0 top-0 bottom-0 w-1">
                   <div className="h-1/2 bg-blue-500"></div>
                   <div className="h-1/2 bg-red-600"></div>
                 </div>
-                <div className="border-l-3 p-5 ml-4">
+                <div className="pl-4">
                   <h3 className="font-bold mb-2 text-secondary">Blue Red Belt</h3>
                   <p className="text-secondary text-sm">Represents the progression from sky to sun, approaching advanced levels.</p>
                 </div>
               </div>
               
               {/* Red Belt */}
-              <div className="bg-white p-5 rounded-lg shadow-md border-l-4 border-red-600">
-                <h3 className="font-bold mb-2 text-secondary">Red Belt</h3>
-                <p className="text-secondary text-sm">Symbolizes the sun and the approaching mastery of techniques.</p>
+              <div className="bg-white p-5 rounded-lg shadow-md relative overflow-hidden">
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-red-600"></div>
+                <div className="pl-4">
+                  <h3 className="font-bold mb-2 text-secondary">Red Belt</h3>
+                  <p className="text-secondary text-sm">Symbolizes the sun and the approaching mastery of techniques.</p>
+                </div>
               </div>
               
               {/* Red1 Belt (Advanced Red) - with a white stripe in center */}
-              <div className="bg-white p-5 rounded-lg shadow-md overflow-hidden relative">
-                <div className="absolute left-0 top-0 h-full w-1 bg-red-600">
+              <div className="bg-white p-5 rounded-lg shadow-md relative overflow-hidden">
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-red-600">
                   <div className="absolute top-1/2 left-0 h-1 w-full bg-white transform -translate-y-1/2"></div>
                 </div>
-                <div className="border-l-3 p-5 ml-4">
+                <div className="pl-4">
                   <h3 className="font-bold mb-2 text-secondary">Red Belt (Advanced)</h3>
                   <p className="text-secondary text-sm">Represents further progression in red belt skills and techniques.</p>
                 </div>
               </div>
               
               {/* Red Black Belt (Combined) */}
-              <div className="bg-white p-5 rounded-lg shadow-md overflow-hidden relative">
-                <div className="absolute left-0 top-0 h-full w-1">
+              <div className="bg-white p-5 rounded-lg shadow-md relative overflow-hidden">
+                <div className="absolute left-0 top-0 bottom-0 w-1">
                   <div className="h-1/2 bg-red-600"></div>
                   <div className="h-1/2 bg-black"></div>
                 </div>
-                <div className="border-l-3 p-5 ml-4">
+                <div className="pl-4">
                   <h3 className="font-bold mb-2 text-secondary">Red Black Belt</h3>
                   <p className="text-secondary text-sm">The final stage before black belt, combining red's passion with approaching black belt mastery.</p>
                 </div>
               </div>
               
               {/* Black Belt */}
-              <div className="bg-white p-5 rounded-lg shadow-md border-l-4 border-black">
-                <h3 className="font-bold mb-2 text-secondary">Black Belt</h3>
-                <p className="text-secondary text-sm">Represents maturity and proficiency in Taekwondo, the opposite of white - the completion of the beginner's journey.</p>
+              <div className="bg-white p-5 rounded-lg shadow-md relative overflow-hidden">
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-black"></div>
+                <div className="pl-4">
+                  <h3 className="font-bold mb-2 text-secondary">Black Belt</h3>
+                  <p className="text-secondary text-sm">Represents maturity and proficiency in Taekwondo, the opposite of white - the completion of the beginner's journey.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -596,182 +619,400 @@ const Programs = () => {
               Our examination process ensures that students have mastered the necessary skills before progressing to the next level.
             </p>
 
-            {/* Examination Process */}
-            <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-              <h3 className="text-xl font-bold mb-4 text-secondary">Examination Process</h3>
-              <div className="space-y-4">
-                <div className="flex items-start">
-                  <div className="bg-primary rounded-full w-8 h-8 flex items-center justify-center text-white font-bold mr-4 mt-1 flex-shrink-0">1</div>
-                  <div>
-                    <h4 className="font-bold text-secondary mb-1">Eligibility Assessment</h4>
-                    <p className="text-gray-700">Before applying for an examination, students must meet minimum training requirements, including a specific number of classes attended and time spent at their current rank.</p>
+            {/* Upcoming Examinations - Card Layout */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              {/* February Exam Card */}
+              <div className="bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
+                <div className="relative">
+                  <img 
+                    src={require('../../assets/images/23-feb-2025-exam.jpg')}
+                    alt="February Belt Examination" 
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="absolute top-0 left-0 bg-primary text-white py-2 px-4 rounded-br-lg font-bold">
+                    <span className="text-sm">23 February</span>
+                    <span className="text-lg ml-1 font-bold">2025</span>
                   </div>
                 </div>
-                
-                <div className="flex items-start">
-                  <div className="bg-primary rounded-full w-8 h-8 flex items-center justify-center text-white font-bold mr-4 mt-1 flex-shrink-0">2</div>
-                  <div>
-                    <h4 className="font-bold text-secondary mb-1">Pre-Examination Review</h4>
-                    <p className="text-gray-700">Students participate in preparation classes where instructors provide guidance on exam requirements and offer feedback for improvement.</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="bg-primary rounded-full w-8 h-8 flex items-center justify-center text-white font-bold mr-4 mt-1 flex-shrink-0">3</div>
-                  <div>
-                    <h4 className="font-bold text-secondary mb-1">Formal Examination</h4>
-                    <p className="text-gray-700">Exams are conducted by a panel of certified instructors who evaluate each student's performance according to rank-specific criteria. Family members are welcome to observe the examination.</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="bg-primary rounded-full w-8 h-8 flex items-center justify-center text-white font-bold mr-4 mt-1 flex-shrink-0">4</div>
-                  <div>
-                    <h4 className="font-bold text-secondary mb-1">Evaluation & Results</h4>
-                    <p className="text-gray-700">Examiners provide written evaluations highlighting strengths and areas for improvement. Results are typically announced at the end of the examination day.</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="bg-primary rounded-full w-8 h-8 flex items-center justify-center text-white font-bold mr-4 mt-1 flex-shrink-0">5</div>
-                  <div>
-                    <h4 className="font-bold text-secondary mb-1">Belt Ceremony</h4>
-                    <p className="text-gray-700">Successful candidates receive their new belts at a formal ceremony that celebrates their achievement and commitment to Taekwondo.</p>
-                  </div>
+                <div className="p-5">
+                  <h3 className="text-xl font-bold mb-3 text-secondary">Winter Belt Examination</h3>
+                  <p className="text-gray-700 mb-4">
+                    Our first examination of the year focuses on beginner and intermediate level belt promotions. Students will demonstrate techniques learned during the winter training period.
+                  </p>
+                  <button 
+                    onClick={() => setFebExamModalOpen(true)}
+                    className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors shadow-sm"
+                  >
+                    View Details
+                  </button>
                 </div>
               </div>
-            </div>
 
-            {/* Examination Requirements */}
-            <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-              <h3 className="text-xl font-bold mb-4 text-secondary">Examination Requirements</h3>
-              <p className="text-gray-700 mb-4">
-                Each belt examination evaluates proficiency in several key areas. The specific techniques and forms required increase in complexity as students advance through the ranks.
-              </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="border-l-4 border-primary pl-4">
-                  <h4 className="font-bold text-secondary mb-2">Basic Techniques (Kibon Dongjak)</h4>
-                  <p className="text-gray-700">Fundamental stances, blocks, punches, and kicks that form the foundation of Taekwondo movements.</p>
+              {/* Belt Exam Card */}
+              <div className="bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
+                <div className="relative">
+                  <img 
+                    src={require('../../assets/images/belt-2025-exam .jpg')}
+                    alt="Belt Promotion Ceremony" 
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="absolute top-0 left-0 bg-primary text-white py-2 px-4 rounded-br-lg font-bold">
+                    <span className="text-sm">15 June</span>
+                    <span className="text-lg ml-1 font-bold">2025</span>
+                  </div>
                 </div>
-                
-                <div className="border-l-4 border-primary pl-4">
-                  <h4 className="font-bold text-secondary mb-2">Forms (Poomsae/Taegeuk)</h4>
-                  <p className="text-gray-700">Choreographed patterns of movements that simulate combat against imaginary opponents, demonstrating technique and focus.</p>
-                </div>
-                
-                <div className="border-l-4 border-primary pl-4">
-                  <h4 className="font-bold text-secondary mb-2">One-Step Sparring (Hanbon Kyorugi)</h4>
-                  <p className="text-gray-700">Pre-arranged attack and defense sequences performed with a partner to demonstrate practical application of techniques.</p>
-                </div>
-                
-                <div className="border-l-4 border-primary pl-4">
-                  <h4 className="font-bold text-secondary mb-2">Free Sparring (Kyorugi)</h4>
-                  <p className="text-gray-700">For higher belt levels, controlled combat with a partner following competition rules and safety protocols.</p>
-                </div>
-                
-                <div className="border-l-4 border-primary pl-4">
-                  <h4 className="font-bold text-secondary mb-2">Breaking (Kyukpa)</h4>
-                  <p className="text-gray-700">Demonstration of power and technique by breaking boards, typically required for higher belt examinations.</p>
-                </div>
-                
-                <div className="border-l-4 border-primary pl-4">
-                  <h4 className="font-bold text-secondary mb-2">Theory & Terminology</h4>
-                  <p className="text-gray-700">Understanding of Taekwondo principles, history, Korean terminology, and concepts appropriate to rank level.</p>
+                <div className="p-5">
+                  <h3 className="text-xl font-bold mb-3 text-secondary">Summer Belt Ceremony</h3>
+                  <p className="text-gray-700 mb-4">
+                    Join us for our grand summer belt promotion ceremony celebrating students from all levels who have successfully completed their examinations in the first half of the year.
+                  </p>
+                  <button 
+                    onClick={() => setBeltExamModalOpen(true)}
+                    className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors shadow-sm"
+                  >
+                    View Details
+                  </button>
                 </div>
               </div>
-            </div>
-
-            {/* Examination Schedule and Fees */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-xl font-bold mb-4 text-secondary">Examination Schedule & Fees</h3>
               
-              <div className="mb-6">
-                <h4 className="font-bold text-secondary mb-2">Examination Schedule</h4>
-                <p className="text-gray-700 mb-3">
-                  Belt examinations are held quarterly at our main training center:
-                </p>
-                <ul className="list-disc pl-5 text-gray-700 space-y-2">
-                  <li>March (Spring Examination)</li>
-                  <li>June (Summer Examination)</li>
-                  <li>September (Fall Examination)</li>
-                  <li>December (Winter Examination)</li>
-                </ul>
-                <p className="text-gray-700 mt-3">
-                  Specific dates are announced at least one month in advance and posted at all training centers and on our website.
-                </p>
-              </div>
-              
-              <div className="mb-6">
-                <h4 className="font-bold text-secondary mb-2">Examination Fees</h4>
-                <p className="text-gray-700 mb-3">
-                  Examination fees vary by belt level and cover testing, evaluation, certification, and the new belt:
-                </p>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead className="bg-gray-100">
-                      <tr>
-                        <th className="p-3 text-left">Belt Level</th>
-                        <th className="p-3 text-right">Fee</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200">
-                      <tr>
-                        <td className="p-3">White to Yellow</td>
-                        <td className="p-3 text-right">₹1,500</td>
-                      </tr>
-                      <tr>
-                        <td className="p-3">Yellow to Yellow-Green</td>
-                        <td className="p-3 text-right">₹1,800</td>
-                      </tr>
-                      <tr>
-                        <td className="p-3">Yellow-Green to Green</td>
-                        <td className="p-3 text-right">₹2,000</td>
-                      </tr>
-                      <tr>
-                        <td className="p-3">Green to Green-Blue</td>
-                        <td className="p-3 text-right">₹2,200</td>
-                      </tr>
-                      <tr>
-                        <td className="p-3">Green-Blue to Blue</td>
-                        <td className="p-3 text-right">₹2,500</td>
-                      </tr>
-                      <tr>
-                        <td className="p-3">Blue to Blue-Red</td>
-                        <td className="p-3 text-right">₹2,800</td>
-                      </tr>
-                      <tr>
-                        <td className="p-3">Blue-Red to Red</td>
-                        <td className="p-3 text-right">₹3,000</td>
-                      </tr>
-                      <tr>
-                        <td className="p-3">Red to Red-Black</td>
-                        <td className="p-3 text-right">₹3,500</td>
-                      </tr>
-                      <tr>
-                        <td className="p-3">Red-Black to Black Belt (1st Dan)</td>
-                        <td className="p-3 text-right">₹8,000</td>
-                      </tr>
-                    </tbody>
-                  </table>
+              {/* April Exam Card */}
+              <div className="bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
+                <div className="relative">
+                  <img 
+                    src={require('../../assets/images/27-april-2025-exam .jpg')}
+                    alt="April Belt Examination" 
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="absolute top-0 left-0 bg-primary text-white py-2 px-4 rounded-br-lg font-bold">
+                    <span className="text-sm">27 April</span>
+                    <span className="text-lg ml-1 font-bold">2025</span>
+                  </div>
                 </div>
-                <p className="text-gray-700 text-xs mt-2">
-                  *Black belt examinations are conducted less frequently (twice a year) and require additional preparation.
-                </p>
+                <div className="p-5">
+                  <h3 className="text-xl font-bold mb-3 text-secondary">Spring Belt Examination</h3>
+                  <p className="text-gray-700 mb-4">
+                    Join us for our Spring belt promotion examination. Students from all levels will demonstrate their skills and techniques for advancement to the next belt rank.
+                  </p>
+                  <button 
+                    onClick={() => setAprilExamModalOpen(true)}
+                    className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors shadow-sm"
+                  >
+                    View Details
+                  </button>
+                </div>
               </div>
               
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link to="/contact" className="px-6 py-3 bg-primary text-white rounded-md hover:bg-opacity-90 transition-colors">
-                  Contact for Next Examination
-                </Link>
-                <Link to="/enroll" className="px-6 py-3 border border-primary text-primary rounded-md hover:bg-gray-100 transition-colors">
-                  Register for Classes
-                </Link>
+              {/* May Exam Card */}
+              <div className="bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
+                <div className="relative">
+                  <img 
+                    src={require('../../assets/images/18-may-2025-exam.jpg')} 
+                    alt="May Belt Examination" 
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="absolute top-0 left-0 bg-primary text-white py-2 px-4 rounded-br-lg font-bold">
+                    <span className="text-sm">18 May</span>
+                    <span className="text-lg ml-1 font-bold">2025</span>
+                  </div>
+                </div>
+                <div className="p-5">
+                  <h3 className="text-xl font-bold mb-3 text-secondary">Black Belt Examination</h3>
+                  <p className="text-gray-700 mb-4">
+                    Special black belt examination for advanced students ready to achieve their Dan ranks. This prestigious event showcases years of dedication and mastery.
+                  </p>
+                  <button 
+                    onClick={() => setMayExamModalOpen(true)}
+                    className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors shadow-sm"
+                  >
+                    View Details
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
+      
+      {/* Exam Modal - April */}
+      {aprilExamModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+          <div className="bg-white rounded-xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto mx-4">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold text-secondary">Spring Belt Examination - 27 April 2025</h2>
+              <button 
+                onClick={() => setAprilExamModalOpen(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            
+            <img 
+              src={require('../../assets/images/27-april-2025-exam .jpg')} 
+              alt="April Belt Examination" 
+              className="w-full h-64 object-cover mb-4 rounded-lg"
+            />
+            
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-xl font-bold mb-2 text-secondary">Examination Details</h3>
+                <p className="text-gray-700">
+                  Our Spring Belt Examination will evaluate students from all levels who meet the eligibility requirements. This formal assessment will determine readiness for advancement to the next belt rank.
+                </p>
+              </div>
+              
+              <div>
+                <h4 className="font-bold text-secondary mb-1">Date & Time</h4>
+                <p className="text-gray-700">April 27, 2025 | 9:00 AM - 5:00 PM</p>
+              </div>
+              
+              <div>
+                <h4 className="font-bold text-secondary mb-1">Location</h4>
+                <p className="text-gray-700">Main Dojang, 123 Martial Arts Way</p>
+              </div>
+              
+              <div>
+                <h4 className="font-bold text-secondary mb-1">Examination Process</h4>
+                <ol className="list-decimal pl-5 text-gray-700 space-y-2">
+                  <li><span className="font-medium">Eligibility Assessment</span> - Students must meet minimum training requirements</li>
+                  <li><span className="font-medium">Pre-Examination Review</span> - Preparation classes with instructor feedback</li>
+                  <li><span className="font-medium">Formal Examination</span> - Evaluation by certified instructors</li>
+                  <li><span className="font-medium">Results & Evaluation</span> - Written assessments provided</li>
+                  <li><span className="font-medium">Belt Ceremony</span> - Successful candidates receive their new belts</li>
+                </ol>
+              </div>
+              
+              <div>
+                <h4 className="font-bold text-secondary mb-1">Requirements</h4>
+                <ul className="list-disc pl-5 text-gray-700 space-y-1">
+                  <li>Basic Techniques (Kibon Dongjak)</li>
+                  <li>Forms (Poomsae/Taegeuk)</li>
+                  <li>One-Step Sparring (Hanbon Kyorugi)</li>
+                  <li>Free Sparring (Kyorugi) - higher ranks only</li>
+                  <li>Breaking (Kyukpa) - higher ranks only</li>
+                </ul>
+              </div>
+              
+              <div className="pt-4">
+                <Link to="/contact" className="px-4 py-2 bg-primary text-white rounded-lg inline-block hover:bg-primary-dark transition-colors">
+                  Register for Examination
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Exam Modal - May */}
+      {mayExamModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+          <div className="bg-white rounded-xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto mx-4">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold text-secondary">Black Belt Examination - 18 May 2025</h2>
+              <button 
+                onClick={() => setMayExamModalOpen(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            
+            <img 
+              src={require('../../assets/images/18-may-2025-exam.jpg')} 
+              alt="May Belt Examination" 
+              className="w-full h-64 object-cover mb-4 rounded-lg"
+            />
+            
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-xl font-bold mb-2 text-secondary">Black Belt Examination</h3>
+                <p className="text-gray-700">
+                  This prestigious event is for advanced students who are ready to achieve their Dan ranks. Black belt examinations represent years of dedication and mastery, and are judged by a panel of senior masters.
+                </p>
+              </div>
+              
+              <div>
+                <h4 className="font-bold text-secondary mb-1">Date & Time</h4>
+                <p className="text-gray-700">May 18, 2025 | 10:00 AM - 4:00 PM</p>
+              </div>
+              
+              <div>
+                <h4 className="font-bold text-secondary mb-1">Location</h4>
+                <p className="text-gray-700">Grand Dojang, Taekwondo Headquarters</p>
+              </div>
+              
+              <div>
+                <h4 className="font-bold text-secondary mb-1">Advanced Requirements</h4>
+                <ul className="list-disc pl-5 text-gray-700 space-y-1">
+                  <li>Complete mastery of all Taegeuk forms</li>
+                  <li>Black belt specific Poomsae (Koryo for 1st Dan)</li>
+                  <li>Advanced sparring techniques</li>
+                  <li>Multiple breaking demonstrations</li>
+                  <li>Comprehensive oral examination on Taekwondo philosophy and history</li>
+                  <li>Teaching demonstration</li>
+                </ul>
+              </div>
+              
+              <div>
+                <h4 className="font-bold text-secondary mb-1">Special Requirements</h4>
+                <p className="text-gray-700">
+                  Candidates must have recommendation letters from their primary instructor and have completed a minimum of 1 year training as a red-black belt. A written thesis on personal Taekwondo journey is also required.
+                </p>
+              </div>
+              
+              <div className="pt-4">
+                <Link to="/contact" className="px-4 py-2 bg-primary text-white rounded-lg inline-block hover:bg-primary-dark transition-colors">
+                  Register for Black Belt Exam
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Exam Modal - February */}
+      {febExamModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+          <div className="bg-white rounded-xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto mx-4">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold text-secondary">Winter Belt Examination - 23 February 2025</h2>
+              <button 
+                onClick={() => setFebExamModalOpen(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            
+            <img 
+              src={require('../../assets/images/23-feb-2025-exam.jpg')} 
+              alt="February Belt Examination" 
+              className="w-full h-64 object-cover mb-4 rounded-lg"
+            />
+            
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-xl font-bold mb-2 text-secondary">Examination Details</h3>
+                <p className="text-gray-700">
+                  Our Winter Belt Examination is ideal for beginners and intermediate students looking to advance to their next belt level. This event focuses on fundamental techniques and forms appropriate for white through green belt levels.
+                </p>
+              </div>
+              
+              <div>
+                <h4 className="font-bold text-secondary mb-1">Date & Time</h4>
+                <p className="text-gray-700">February 23, 2025 | 10:00 AM - 3:00 PM</p>
+              </div>
+              
+              <div>
+                <h4 className="font-bold text-secondary mb-1">Location</h4>
+                <p className="text-gray-700">Training Hall, Maharashtra Taekwondo Federation</p>
+              </div>
+              
+              <div>
+                <h4 className="font-bold text-secondary mb-1">Examination Process</h4>
+                <ol className="list-decimal pl-5 text-gray-700 space-y-2">
+                  <li><span className="font-medium">Registration</span> - All participants must register two weeks before the event</li>
+                  <li><span className="font-medium">Warm-up Session</span> - Guided warm-up before examination begins</li>
+                  <li><span className="font-medium">Technical Evaluation</span> - Demonstration of required techniques</li>
+                  <li><span className="font-medium">Forms Assessment</span> - Performance of appropriate Taegeuk forms</li>
+                  <li><span className="font-medium">Certificate Distribution</span> - Successful candidates receive certificates</li>
+                </ol>
+              </div>
+              
+              <div>
+                <h4 className="font-bold text-secondary mb-1">Who Should Attend</h4>
+                <p className="text-gray-700">
+                  This examination is primarily for white through green belt students who have completed the minimum required training hours. Parents and family members are welcome to attend and support participants.
+                </p>
+              </div>
+              
+              <div className="pt-4">
+                <Link to="/contact" className="px-4 py-2 bg-primary text-white rounded-lg inline-block hover:bg-primary-dark transition-colors">
+                  Register for Examination
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Exam Modal - Belt Ceremony */}
+      {beltExamModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+          <div className="bg-white rounded-xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto mx-4">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold text-secondary">Summer Belt Ceremony - 15 June 2025</h2>
+              <button 
+                onClick={() => setBeltExamModalOpen(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            
+            <img 
+              src={require('../../assets/images/belt-2025-exam .jpg')} 
+              alt="Belt Promotion Ceremony" 
+              className="w-full h-64 object-cover mb-4 rounded-lg"
+            />
+            
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-xl font-bold mb-2 text-secondary">Summer Belt Ceremony</h3>
+                <p className="text-gray-700">
+                  The Summer Belt Ceremony is our grand mid-year celebration honoring all students who have successfully passed their belt examinations during the first half of 2025. This formal event recognizes the dedication and progress of our taekwondo practitioners.
+                </p>
+              </div>
+              
+              <div>
+                <h4 className="font-bold text-secondary mb-1">Date & Time</h4>
+                <p className="text-gray-700">June 15, 2025 | 11:00 AM - 2:00 PM</p>
+              </div>
+              
+              <div>
+                <h4 className="font-bold text-secondary mb-1">Location</h4>
+                <p className="text-gray-700">Main Auditorium, Maharashtra Taekwondo Headquarters</p>
+              </div>
+              
+              <div>
+                <h4 className="font-bold text-secondary mb-1">Event Highlights</h4>
+                <ul className="list-disc pl-5 text-gray-700 space-y-1">
+                  <li>Formal Belt Presentation by Master Instructors</li>
+                  <li>Special Demonstration by Senior Students</li>
+                  <li>Recognition of Outstanding Achievements</li>
+                  <li>Photo Opportunities with Instructors</li>
+                  <li>Refreshments and Social Gathering</li>
+                </ul>
+              </div>
+              
+              <div>
+                <h4 className="font-bold text-secondary mb-1">What to Bring</h4>
+                <p className="text-gray-700">
+                  Students should wear their current belt and full uniform (dobok). Bring your examination certificate if you received one. Family members are encouraged to attend this special celebration.
+                </p>
+              </div>
+              
+              <div className="pt-4">
+                <Link to="/contact" className="px-4 py-2 bg-primary text-white rounded-lg inline-block hover:bg-primary-dark transition-colors">
+                  Confirm Attendance
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Testimonials - Modified carousel for better responsive layout */}
       <section className="py-16 bg-gray-50 overflow-hidden">
@@ -957,4 +1198,4 @@ const Programs = () => {
   );
 };
 
-export default Programs; 
+export default Programs;

@@ -4,8 +4,8 @@ import { useAuth } from '../../context/AuthContext';
 import logo from '../../assets/images/logo.png';
 import { FaUserCircle, FaSignOutAlt, FaUserCog } from 'react-icons/fa';
 
-// Add keyframes for the pulsing animation to the top of the file
-const pulseAnimation = `
+// Add keyframes for animations
+const animations = `
 @keyframes pulse-animation {
   0% {
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
@@ -15,6 +15,28 @@ const pulseAnimation = `
   }
   100% {
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+@keyframes borderTopIn {
+  from {
+    width: 0;
+    left: 0;
+  }
+  to {
+    width: 100%;
+    left: 0;
+  }
+}
+
+@keyframes borderBottomIn {
+  from {
+    width: 0;
+    right: 0;
+  }
+  to {
+    width: 100%;
+    right: 0;
   }
 }
 `;
@@ -29,6 +51,8 @@ const Header = () => {
   const [isMobileAccountOpen, setIsMobileAccountOpen] = useState(false);
   const userDropdownRef = useRef(null);
   const accountDropdownRef = useRef(null);
+  
+  // We don't need headerOpacity state anymore since we're using fixed opacity
 
   // Close sidebar when ESC key is pressed
   useEffect(() => {
@@ -119,31 +143,51 @@ const Header = () => {
 
   return (
     <>
-      {/* Add the pulse animation styles */}
-      <style>{pulseAnimation}</style>
+      {/* Add the animations */}
+      <style>{animations}</style>
       
-      <header className="bg-secondary text-white shadow-md py-3 md:py-0">
-        <div className="container-fluid px-2">
-          <div className="flex justify-between items-center h-16 md:h-24 relative">
+      <header 
+        className="bg-secondary text-white shadow-md md:relative md:static fixed top-0 z-40 w-full transition-all duration-300 shadow-md" 
+      >
+        <div className="container-fluid px-1">
+          <div className="flex justify-between items-center h-14 md:h-24 relative">
             {/* Logo - with positioning for larger size */}
-            <div className="relative z-10 ml-2 md:ml-6 flex items-center">
+            <div className="relative z-10 ml-1 md:ml-6 flex items-center justify-center py-1 md:py-0">
               <Link to="/" className="block">
-                <img src={logo} alt="AMTA Logo" className="h-[105px] md:h-[156px] w-auto object-contain md:mt-[30px]" />
+                <img 
+                  src={logo} 
+                  alt="AMTA Logo" 
+                  className="h-[54px] md:h-[156px] w-auto object-contain md:mt-[30px]" 
+                />
               </Link>
             </div>
 
             {/* Desktop Navigation - explicitly centered */}
             <nav className="hidden md:flex flex-1 justify-center space-x-4 lg:space-x-8 mx-auto pl-[70px] md:pl-[180px]">
-              <Link to="/" className="px-2 lg:px-3 hover:text-primary transition-colors">Home</Link>
-              <Link to="/programs" className="px-2 lg:px-3 hover:text-primary transition-colors">Programs</Link>
-              <Link to="/events" className="px-2 lg:px-3 hover:text-primary transition-colors">Events</Link>
-              <Link to="/gallery" className="px-2 lg:px-3 hover:text-primary transition-colors">Gallery</Link>
-              <Link to="/about" className="px-2 lg:px-3 hover:text-primary transition-colors">About</Link>
-              <Link to="/contact" className="px-2 lg:px-3 hover:text-primary transition-colors">Contact</Link>
+              {[
+                { path: '/', label: 'Home' },
+                { path: '/programs', label: 'Programs' },
+                { path: '/events', label: 'Events' },
+                { path: '/gallery', label: 'Gallery' },
+                { path: '/about', label: 'About' },
+                { path: '/contact', label: 'Contact' },
+              ].map((item) => (
+                <Link 
+                  key={item.path}
+                  to={item.path} 
+                  className="dual-border-link relative inline-block px-2 lg:px-3 py-6 transition-colors duration-300"
+                >
+                  <span className={`relative text-base ${isActiveRoute(item.path) ? 'text-primary font-medium' : 'text-white'}`}>
+                    {item.label}
+                  </span>
+                  <span className={`top-border ${isActiveRoute(item.path) ? 'active' : ''}`}></span>
+                  <span className={`bottom-border ${isActiveRoute(item.path) ? 'active' : ''}`}></span>
+                </Link>
+              ))}
             </nav>
 
             {/* Right side: Authentication & Menu Button with fixed positioning */}
-            <div className="flex items-center md:justify-end flex-shrink-0 mr-2 md:mr-8" style={{ minWidth: '120px' }}>
+            <div className="flex items-center md:justify-end flex-shrink-0 mr-1 md:mr-8" style={{ minWidth: '60px' }}>
               {/* Desktop Authentication Buttons */}
               <div className="hidden md:flex items-center">
                 {currentUser ? (
@@ -199,17 +243,21 @@ const Header = () => {
                     <div className="relative mr-4" ref={accountDropdownRef}>
                       <button 
                         onClick={toggleAccountDropdown}
-                        className="flex items-center space-x-1 px-3 hover:text-primary transition-colors whitespace-nowrap"
+                        className="dual-border-link relative inline-block px-3 py-6 transition-colors duration-300 flex items-center"
                       >
-                        <span>Account</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 transition-transform duration-200 ${isAccountDropdownOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <span className="relative text-white">
+                          Account
+                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ml-1 transition-transform duration-200 ${isAccountDropdownOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
+                        <span className="top-border"></span>
+                        <span className="bottom-border"></span>
                       </button>
                       {isAccountDropdownOpen && (
                         <div className="absolute right-0 mt-2 w-48 bg-white text-secondary rounded-md shadow-lg py-1 z-50">
-                          <Link to="/login" className="block px-4 py-2 hover:bg-gray-100">Login</Link>
-                          <Link to="/register" className="block px-4 py-2 hover:bg-gray-100">Sign up</Link>
+                          <Link to="/login" className="block px-4 py-2 hover:bg-gray-100 hover:text-primary transition-colors">Login</Link>
+                          <Link to="/register" className="block px-4 py-2 hover:bg-gray-100 hover:text-primary transition-colors">Sign up</Link>
                         </div>
                       )}
                     </div>
@@ -219,13 +267,13 @@ const Header = () => {
               </div>
 
               {/* Mobile hamburger button fixed at far right */}
-              <div className="md:hidden ml-auto">
+              <div className="md:hidden ml-auto flex items-center hamburger-container">
                 <button
                   onClick={toggleSidebar}
-                  className="text-white focus:outline-none bg-secondary-700 p-2 rounded-md hover:bg-secondary-600 transition-colors"
+                  className="text-white focus:outline-none bg-secondary-700 p-1.5 rounded-md hover:bg-secondary-600 transition-colors flex items-center justify-center h-[42px] w-[42px]"
                   aria-label="Toggle menu"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                   </svg>
                 </button>
@@ -236,27 +284,29 @@ const Header = () => {
 
         {/* Mobile Sidebar Overlay */}
         <div 
-          className={`fixed inset-0 bg-black z-50 transition-opacity duration-300 ease-in-out ${
+          className={`fixed inset-0 bg-black z-50 transition-opacity duration-300 ease-in-out md:hidden ${
             isSidebarOpen ? 'bg-opacity-50 backdrop-blur-sm' : 'bg-opacity-0 pointer-events-none backdrop-blur-none'
           }`} 
           onClick={toggleSidebar}
+          style={{ opacity: 1 }} /* Force full opacity */
         ></div>
         
         {/* Mobile Sidebar */}
         <div 
-          className={`fixed top-0 right-0 w-72 h-full bg-gradient-to-b from-secondary to-secondary-800 shadow-2xl z-50 transform transition-all duration-300 ease-in-out ${
+          className={`fixed top-0 right-0 w-[85%] sm:w-96 max-w-[360px] h-full bg-gradient-to-b from-secondary to-secondary-800 shadow-2xl z-50 transform transition-all duration-300 ease-in-out md:hidden ${
             isSidebarOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-95'
           }`}
+          style={{ opacity: 1 }} /* Force full opacity */
         >
           <div className="flex flex-col h-full">
-            {/* Header & Close Button */}
-            <div className="flex items-center justify-between p-4 border-b border-white/10">
-              <Link to="/" className="flex items-center" onClick={toggleSidebar}>
-                <img src={logo} alt="AMTA Logo" className="h-28 w-auto object-contain" />
+            {/* Header & Close Button - with improved alignment */}
+            <div className="flex items-center justify-between px-5 py-3 border-b border-white/10">
+              <Link to="/" onClick={toggleSidebar} className="flex items-center">
+                <img src={logo} alt="AMTA Logo" className="h-14 w-auto object-contain" />
               </Link>
               <button 
                 onClick={toggleSidebar} 
-                className="p-2 rounded-full hover:bg-white/10 text-white transition-colors duration-200 focus:outline-none"
+                className="p-2 rounded-full hover:bg-white/10 text-white transition-colors duration-200 focus:outline-none flex items-center justify-center h-[40px] w-[40px]"
                 aria-label="Close menu"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -264,10 +314,10 @@ const Header = () => {
                 </svg>
               </button>
             </div>
-
+            
             {/* Navigation Links - scrollable area */}
-            <div className="flex-1 overflow-y-auto py-2 px-3">
-              <nav className="flex flex-col space-y-1">
+            <div className="flex-1 overflow-y-auto py-3 px-5">
+              <nav className="flex flex-col space-y-1.5">
                 {/* Main Navigation */}
                 {[
                   { path: '/', label: 'Home' },
@@ -281,13 +331,13 @@ const Header = () => {
                   <Link 
                     key={item.path}
                     to={item.path} 
-                    className={`flex items-center w-full px-3 py-3 rounded-lg transition-all duration-200 ${
+                    className={`flex items-center w-full px-4 py-3.5 rounded-lg transition-all duration-200 ${
                       isActiveRoute(item.path) 
                         ? 'bg-primary text-white font-medium' 
                         : 'text-white hover:bg-white/10'
                     }`}
                   >
-                    <span className="block">{item.label}</span>
+                    <span className="block text-base">{item.label}</span>
                     {isActiveRoute(item.path) && (
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -410,6 +460,105 @@ const Header = () => {
           </div>
         </div>
       </header>
+
+      {/* Add the custom CSS for navbar animations and mobile fixes */}
+      <style jsx="true">{`
+        /* Remove default anchor underline */
+        a {
+          text-decoration: none !important;
+        }
+        
+        /* Dual border link styles */
+        .dual-border-link {
+          position: relative;
+          padding: 6px 12px;
+          text-decoration: none !important;
+          border-bottom: none !important;
+          box-shadow: none !important;
+          outline: none !important;
+        }
+        
+        .dual-border-link:hover {
+          color: #FF6B35;
+          text-decoration: none !important;
+        }
+        
+        .dual-border-link span {
+          text-decoration: none !important;
+          border-bottom: none !important;
+        }
+        
+        /* Top border */
+        .top-border {
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 2px;
+          width: 0;
+          background-color: #FF6B35;
+          transition: width 0.3s ease;
+        }
+        
+        .dual-border-link:hover .top-border {
+          animation: borderTopIn 0.3s forwards;
+        }
+        
+        /* Bottom border */
+        .bottom-border {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          height: 2px;
+          width: 0;
+          background-color: #FF6B35;
+          transition: width 0.3s ease;
+        }
+        
+        .dual-border-link:hover .bottom-border {
+          animation: borderBottomIn 0.3s forwards;
+        }
+        
+        /* Active state */
+        .top-border.active,
+        .bottom-border.active {
+          width: 100%;
+          background-color: #FF6B35;
+        }
+        
+        /* Fix for any other potential styling causing underlines */
+        .dual-border-link:focus,
+        .dual-border-link:active,
+        .dual-border-link * {
+          text-decoration: none !important;
+          outline: none;
+          box-shadow: none;
+        }
+        
+        /* Hide hamburger menu on desktop with !important */
+        @media (min-width: 768px) {
+          .hamburger-container {
+            display: none !important;
+          }
+        }
+        
+        /* Fix for sticky header on mobile */
+        @supports (-webkit-touch-callout: none) {
+          /* iOS specific fix */
+          header.sticky {
+            position: -webkit-sticky;
+          }
+        }
+        
+        /* Add padding to the top of the page content to prevent content from hiding under sticky header */
+        body {
+          scroll-padding-top: 80px; /* Equal to the height of the mobile header */
+        }
+        
+        /* Smooth scrolling */
+        html {
+          scroll-behavior: smooth;
+        }
+      `}</style>
     </>
   );
 };

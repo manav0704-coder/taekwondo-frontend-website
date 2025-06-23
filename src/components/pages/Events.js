@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import EventService from '../../api/eventService';
 import { FaCalendarAlt, FaMapMarkerAlt, FaTrophy, FaFilter, FaSearch } from 'react-icons/fa';
-// Import event images
-import stateTaekwondoChampionship from '../../assets/images/Maharashtra-State-Taekwondo-Championship-2023.jpeg';
-import summerTrainingCamp from '../../assets/images/Taekwondo-Summer-Training-Camp.jpeg';
-import beltCeremony from '../../assets/images/Belt-Promotion-Ceremony.jpg';
-import stateChampionshipWinners from '../../assets/images/State-Championship-Winners.jpg';
+// Import new event images
+import event1Img from '../../assets/images/event-1-img.jpg';
+import event2Img from '../../assets/images/event-2-img.jpg';
+import event3Img from '../../assets/images/event-3-img.jpg';
+import event4Img from '../../assets/images/event-4-img.jpg';
+import event5Img from '../../assets/images/event-5-img.jpg';
 // Import Modal and EventContent components
 import Modal from '../common/Modal';
 import EventContent from '../common/EventContent';
@@ -28,21 +28,21 @@ const Events = () => {
           venueDetails: 'Shivaji Park Sports Complex'
         },
         date: {
-          startDate: '2023-12-15',
-          endDate: '2023-12-17',
+          startDate: '2024-04-15', // Changed to upcoming date
+          endDate: '2024-04-17',
           startTime: '09:00 AM',
           endTime: '06:00 PM'
         },
         registrationInfo: {
           isRegistrationRequired: true,
-          registrationDeadline: '2023-11-30'
+          registrationDeadline: '2024-03-30'
         },
-        image: stateTaekwondoChampionship
+        image: event1Img
       },
       {
         _id: '2',
-        title: 'Taekwondo Summer Training Camp',
-        description: 'Intensive summer training camp for all students looking to improve their techniques and prepare for upcoming competitions. Training will focus on forms, sparring, and competition strategies.',
+        title: 'National Taekwondo Training Camp',
+        description: 'Intensive training camp for all students looking to improve their techniques and prepare for upcoming competitions. Training will focus on forms, sparring, and competition strategies.',
         eventType: 'training-camp',
         location: {
           city: 'Pune',
@@ -50,20 +50,20 @@ const Events = () => {
           venueDetails: 'AMTA Training Center'
         },
         date: {
-          startDate: '2023-12-28',
-          endDate: '2024-01-12',
+          startDate: '2024-04-28', // Changed to upcoming date
+          endDate: '2024-05-10',
           startTime: '08:00 AM',
           endTime: '04:00 PM'
         },
         registrationInfo: {
           isRegistrationRequired: true,
-          registrationDeadline: '2023-12-18'
+          registrationDeadline: '2024-04-15'
         },
-        image: summerTrainingCamp
+        image: event2Img
       },
       {
         _id: '3',
-        title: 'Belt Promotion Ceremony',
+        title: 'Spring Belt Promotion Ceremony',
         description: 'Quarterly belt promotion ceremony for students who have completed their requirements. Family and friends are invited to attend and support their athletes.',
         eventType: 'belt-test',
         location: {
@@ -72,20 +72,20 @@ const Events = () => {
           venueDetails: 'City Sports Hall'
         },
         date: {
-          startDate: '2024-01-20',
-          endDate: '2024-01-20',
+          startDate: '2024-05-15', // Changed to upcoming date
+          endDate: '2024-05-15',
           startTime: '10:00 AM',
           endTime: '01:00 PM'
         },
         registrationInfo: {
           isRegistrationRequired: false
         },
-        image: beltCeremony
+        image: event3Img
       },
       {
         _id: '4',
-        title: 'International Master Seminar',
-        description: 'Special training seminar with Grandmaster Kim from South Korea. This is a rare opportunity to learn from one of the most accomplished Taekwondo masters in the world.',
+        title: 'International Master Workshop',
+        description: 'Special training workshop with Grandmaster Lee from South Korea. This is a rare opportunity to learn from one of the most accomplished Taekwondo masters in the world.',
         eventType: 'seminar',
         location: {
           city: 'Mumbai',
@@ -93,22 +93,22 @@ const Events = () => {
           venueDetails: 'International Sports Arena'
         },
         date: {
-          startDate: '2023-11-14',
-          endDate: '2023-11-15',
+          startDate: '2024-05-20', // Changed to upcoming date
+          endDate: '2024-05-22',
           startTime: '09:00 AM',
           endTime: '05:00 PM'
         },
         registrationInfo: {
           isRegistrationRequired: true,
-          registrationDeadline: '2023-11-07'
+          registrationDeadline: '2024-05-10'
         },
-        image: 'https://images.unsplash.com/photo-1616763355548-1b606f439f86?auto=format&fit=crop&q=80&w=1000'
+        image: event4Img
       },
-      // Add a past event for testing the past tab
+      // Past events
       {
         _id: '5',
-        title: 'Regional Taekwondo Competition',
-        description: 'This was a competitive event for all regional schools to participate and showcase their skills.',
+        title: 'Regional Taekwondo Championship',
+        description: 'A competitive event for all regional schools to participate and showcase their skills. Various age groups and belt categories were represented in this exciting tournament.',
         eventType: 'tournament',
         location: {
           city: 'Pune',
@@ -116,25 +116,47 @@ const Events = () => {
           venueDetails: 'Pune Sports Stadium'
         },
         date: {
-          startDate: '2023-08-15',
-          endDate: '2023-08-16',
+          startDate: '2023-11-15', // Past date
+          endDate: '2023-11-16',
           startTime: '09:00 AM',
           endTime: '06:00 PM'
         },
         registrationInfo: {
           isRegistrationRequired: false
         },
-        image: stateChampionshipWinners
-      }
+        image: event5Img
+      },
+      {
+        _id: '7',
+        title: 'National Youth Championship',
+        description: 'Young athletes from across the country competed in various categories showing incredible skill and sportsmanship.',
+        eventType: 'tournament',
+        location: {
+          city: 'Delhi',
+          state: 'Delhi',
+          venueDetails: 'National Sports Arena'
+        },
+        date: {
+          startDate: '2024-01-20', // Past date
+          endDate: '2024-01-22',
+          startTime: '08:00 AM',
+          endTime: '06:00 PM'
+        },
+        registrationInfo: {
+          isRegistrationRequired: true,
+          registrationDeadline: '2024-01-10'
+        },
+        image: event3Img
+      },
     ];
   }, []);
 
   // Component state setup
-  const [events, setEvents] = useState(demoEvents);
-  const [filteredEvents, setFilteredEvents] = useState(demoEvents);
+  const [events, setEvents] = useState([]);
+  const [filteredEvents, setFilteredEvents] = useState([]);
   const [achievements, setAchievements] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState('upcoming');
+  const [activeTab, setActiveTab] = useState('all');
   const [filters, setFilters] = useState({
     eventType: '',
     searchQuery: '',
@@ -153,189 +175,146 @@ const Events = () => {
       title: 'National Championship Gold Medal',
       description: 'Our students won 5 gold medals at the National Taekwondo Championship',
       year: '2023',
-      image: 'https://images.unsplash.com/photo-1595435934347-d75523460f2f?auto=format&fit=crop&q=80&w=1000',
+      image: event1Img,
     },
     {
       id: 2,
       title: 'International Tournament Recognition',
       description: 'AMTA received special recognition at the International Taekwondo Federation Tournament',
       year: '2022',
-      image: 'https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&q=80&w=1000',
+      image: event2Img,
     },
     {
       id: 3,
       title: 'Best Taekwondo School Award',
       description: 'Awarded as the Best Taekwondo School in Maharashtra',
       year: '2023',
-      image: 'https://images.unsplash.com/photo-1591117207239-788bf8de6c3b?auto=format&fit=crop&q=80&w=1000',
+      image: event3Img,
     },
   ], []);
 
-  // Fetch events from API
+  // Fetch events from API - Simplified to always use demo events and show all initially
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         setLoading(true);
-        console.log('Fetching events from API...');
-        const data = await EventService.getAllEvents();
+        console.log('Setting up events...');
         
-        // Ensure data is an array
-        const eventsArray = Array.isArray(data) ? data : [];
-        
-        // If the API returns an empty array, use demo events
-        if (eventsArray.length === 0) {
-          console.log('API returned empty array, using demo events instead');
-          setEvents(demoEvents);
-          setFilteredEvents(demoEvents);
-        } else {
-          console.log('Using events from API:', eventsArray.length);
-          setEvents(eventsArray);
-          setFilteredEvents(eventsArray);
-        }
+        // Always use demo events for reliability
+        setEvents(demoEvents);
+        setFilteredEvents(demoEvents); // Show all events initially
         
         // Set sample achievements data
         setAchievements(sampleAchievements);
         setLoading(false);
       } catch (err) {
-        console.error('Error fetching events:', err);
-        console.log('Using demo events due to API error');
-        
-        // When API fails, always use demo events
-        setEvents(demoEvents);
-        setFilteredEvents(demoEvents);
-        setAchievements(sampleAchievements);
+        console.error('Error setting up events:', err);
+        setEvents([]);
+        setFilteredEvents([]);
         setLoading(false);
       }
     };
 
     // Call the fetch function
     fetchEvents();
-    
-    // Log the current demoEvents for debugging
-    console.log('Demo events available:', demoEvents);
   }, [demoEvents, sampleAchievements]);
 
-  // Filter events based on active tab and filters
+  // Filter events only when tab or filters change
   useEffect(() => {
-    console.log('Filter effect running with events:', events?.length);
     if (!events || events.length === 0) {
-      console.log('No events to filter');
       return;
     }
 
+    // Start with all events
     let result = [...events];
-
-    // Apply tab filter
-    const currentDate = new Date();
+    
+    // Only apply tab filtering if not on 'all' tab
     if (activeTab === 'upcoming') {
+      const currentDate = new Date();
       result = result.filter(event => {
-        const eventDate = new Date(event.date?.startDate);
-        return eventDate >= currentDate;
+        const eventStartDate = new Date(event.date?.startDate);
+        return eventStartDate >= currentDate;
       });
     } else if (activeTab === 'past') {
+      const currentDate = new Date();
       result = result.filter(event => {
-        const eventDate = new Date(event.date?.startDate);
-        return eventDate < currentDate;
+        const eventStartDate = new Date(event.date?.startDate);
+        return eventStartDate < currentDate;
       });
     }
 
-    console.log('After tab filter:', result.length);
+    // Apply additional filters
+    // Apply event type filter
+    if (filters.eventType) {
+      result = result.filter(event => event.eventType === filters.eventType);
+    }
 
-    // Only apply additional filters if they're set
-    if (filters.eventType || filters.searchQuery || filters.location || filters.dateRange) {
-      // Apply event type filter
-      if (filters.eventType) {
-        result = result.filter(event => event.eventType === filters.eventType);
-      }
+    // Apply search query filter
+    if (filters.searchQuery) {
+      const query = filters.searchQuery.toLowerCase();
+      result = result.filter(
+        event =>
+          (event.title && event.title.toLowerCase().includes(query)) ||
+          (event.description && event.description.toLowerCase().includes(query))
+      );
+    }
 
-      // Apply search query filter
-      if (filters.searchQuery) {
-        const query = filters.searchQuery.toLowerCase();
-        result = result.filter(
-          event =>
-            (event.title && event.title.toLowerCase().includes(query)) ||
-            (event.description && event.description.toLowerCase().includes(query)) ||
-            (event.location?.city && event.location.city.toLowerCase().includes(query)) ||
-            (event.location?.state && event.location.state.toLowerCase().includes(query)) ||
-            (event.location?.venueDetails && event.location.venueDetails.toLowerCase().includes(query))
-        );
-      }
+    // Apply location filter
+    if (filters.location) {
+      const locationQuery = filters.location.toLowerCase();
+      result = result.filter(
+        event =>
+          (event.location?.city && event.location.city.toLowerCase().includes(locationQuery)) ||
+          (event.location?.state && event.location.state.toLowerCase().includes(locationQuery))
+      );
+    }
 
-      // Apply location filter
-      if (filters.location) {
-        const locationQuery = filters.location.toLowerCase();
-        result = result.filter(
-          event =>
-            (event.location?.city && event.location.city.toLowerCase().includes(locationQuery)) ||
-            (event.location?.state && event.location.state.toLowerCase().includes(locationQuery)) ||
-            (event.location?.venueDetails && event.location.venueDetails.toLowerCase().includes(locationQuery))
-        );
-      }
-
-      // Apply date range filter
-      if (filters.dateRange) {
-        if (filters.dateRange === 'thisMonth') {
-          const today = new Date();
-          const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-          const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-          
-          result = result.filter(event => {
-            const eventStartDate = new Date(event.date.startDate);
-            return eventStartDate >= firstDayOfMonth && eventStartDate <= lastDayOfMonth;
-          });
-        } else if (filters.dateRange === 'nextMonth') {
-          const today = new Date();
-          const firstDayOfNextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-          const lastDayOfNextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0);
-          
-          result = result.filter(event => {
-            const eventStartDate = new Date(event.date.startDate);
-            return eventStartDate >= firstDayOfNextMonth && eventStartDate <= lastDayOfNextMonth;
-          });
-        } else if (filters.dateRange === 'next3Months') {
-          const today = new Date();
-          const threeMonthsAhead = new Date(today.getFullYear(), today.getMonth() + 3, today.getDate());
-          
-          result = result.filter(event => {
-            const eventStartDate = new Date(event.date.startDate);
-            return eventStartDate >= today && eventStartDate <= threeMonthsAhead;
-          });
-        }
+    // Apply date range filter
+    if (filters.dateRange) {
+      if (filters.dateRange === 'thisMonth') {
+        const today = new Date();
+        const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+        
+        result = result.filter(event => {
+          const eventStartDate = new Date(event.date.startDate);
+          return eventStartDate >= firstDayOfMonth && eventStartDate <= lastDayOfMonth;
+        });
+      } else if (filters.dateRange === 'nextMonth') {
+        const today = new Date();
+        const firstDayOfNextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+        const lastDayOfNextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0);
+        
+        result = result.filter(event => {
+          const eventStartDate = new Date(event.date.startDate);
+          return eventStartDate >= firstDayOfNextMonth && eventStartDate <= lastDayOfNextMonth;
+        });
+      } else if (filters.dateRange === 'next3Months') {
+        const today = new Date();
+        const threeMonthsAhead = new Date(today.getFullYear(), today.getMonth() + 3, today.getDate());
+        
+        result = result.filter(event => {
+          const eventStartDate = new Date(event.date.startDate);
+          return eventStartDate >= today && eventStartDate <= threeMonthsAhead;
+        });
       }
     }
 
-    console.log('Final filtered events:', result.length);
     setFilteredEvents(result);
   }, [events, filters, activeTab]);
 
-  // Handle tab change
+  // Handle tab change - Updated to include 'all' tab
   const handleTabChange = (tab) => {
     console.log('Tab changed to:', tab);
     setActiveTab(tab);
     
-    // When changing tabs, reset filters
+    // Reset filters when changing tabs
     setFilters({
       eventType: '',
       searchQuery: '',
       location: '',
       dateRange: '',
     });
-    
-    // Filter demo events by tab
-    const currentDate = new Date();
-    let filteredDemoEvents = [...demoEvents];
-    
-    if (tab === 'upcoming') {
-      filteredDemoEvents = filteredDemoEvents.filter(event => new Date(event.date.startDate) >= currentDate);
-    } else if (tab === 'past') {
-      filteredDemoEvents = filteredDemoEvents.filter(event => new Date(event.date.startDate) < currentDate);
-    }
-    
-    // Set events and filtered events
-    setEvents(demoEvents);
-    setFilteredEvents(filteredDemoEvents);
-    
-    console.log('Filtered demo events after tab change:', filteredDemoEvents.length);
   };
 
   // Handle filter changes
@@ -408,7 +387,7 @@ const Events = () => {
       title: event.title || 'Untitled Event',
       description: event.description || 'No description available',
       eventType: event.eventType || 'event',
-      image: event.image || 'https://images.unsplash.com/photo-1555597673-b21d5c3c8c9e?auto=format&fit=crop&q=80&w=1000',
+      image: event.image || event1Img, // Default to event1Img if no image
       date: {
         startDate: event.date?.startDate || new Date(),
         endDate: event.date?.endDate || event.date?.startDate || new Date()
@@ -432,8 +411,9 @@ const Events = () => {
               alt={safeEvent.title} 
               className="w-full h-full object-cover"
               onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = 'https://images.unsplash.com/photo-1555597673-b21d5c3c8c9e?auto=format&fit=crop&q=80&w=1000';
+                console.log('Image failed to load, using fallback');
+                e.target.onerror = null; // Prevent infinite loop
+                e.target.src = event1Img;
               }}
             />
             <div className={`absolute top-0 right-0 mt-2 mr-2 ${getEventTypeColor(safeEvent.eventType)} text-white text-xs font-bold px-2 py-1 rounded-full`}>
@@ -518,6 +498,12 @@ const Events = () => {
           </p>
           <div className="flex flex-wrap gap-4">
             <button 
+              onClick={() => handleTabChange('all')}
+              className={`px-5 py-2 rounded-full ${activeTab === 'all' ? 'bg-primary text-white' : 'bg-white text-secondary'} font-medium transition-colors`}
+            >
+              All Events
+            </button>
+            <button 
               onClick={() => handleTabChange('upcoming')}
               className={`px-5 py-2 rounded-full ${activeTab === 'upcoming' ? 'bg-primary text-white' : 'bg-white text-secondary'} font-medium transition-colors`}
             >
@@ -549,7 +535,8 @@ const Events = () => {
           <div className="mb-8">
             <div className="flex flex-wrap items-center justify-between mb-4">
               <h2 className="text-2xl font-bold text-secondary">
-                {activeTab === 'upcoming' ? 'Upcoming Events' : 'Past Events'}
+                {activeTab === 'upcoming' ? 'Upcoming Events' : 
+                 activeTab === 'past' ? 'Past Events' : 'All Events'}
               </h2>
               <button 
                 onClick={() => setShowFilters(!showFilters)}

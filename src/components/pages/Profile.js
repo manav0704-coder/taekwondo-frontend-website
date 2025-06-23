@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNotification } from '../../context/NotificationContext';
 import { FaUser, FaEnvelope, FaIdCard, FaCalendarAlt, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
-import axios from 'axios';
+import EnrollmentService from '../../api/enrollmentService';
 
 const Profile = () => {
   const { currentUser, token, logout, updatePassword } = useAuth();
@@ -31,22 +31,16 @@ const Profile = () => {
     setIsLoading(true);
     setError('');
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/enrollments`,
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        }
-      );
+      console.log('Fetching enrollments with token:', token ? 'Token exists' : 'No token');
+      const response = await EnrollmentService.getUserEnrollments(token);
       
-      if (response.data.success) {
-        setEnrollments(response.data.data);
-        if (response.data.data.length > 0) {
-          showInfo(`Loaded ${response.data.data.length} enrollment(s)`);
+      if (response.success) {
+        setEnrollments(response.data);
+        if (response.data.length > 0) {
+          showInfo(`Loaded ${response.data.length} enrollment(s)`);
         }
       } else {
-        throw new Error(response.data.message || 'Failed to fetch enrollments');
+        throw new Error(response.message || 'Failed to fetch enrollments');
       }
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message || 'Failed to fetch enrollments';

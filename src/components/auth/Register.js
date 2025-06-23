@@ -84,7 +84,10 @@ const Register = () => {
       // Add role user by default
       const userData = { ...formData, role: 'user' };
       await register(userData);
-      navigate('/login');
+      
+      // If registration is successful, redirect to home page directly
+      console.log('Registration successful, redirecting to home page');
+      navigate('/');
     } catch (error) {
       setSubmitError(error.message || 'Failed to create account. Please try again.');
     } finally {
@@ -99,7 +102,7 @@ const Register = () => {
     
     try {
       await registerWithGoogle();
-      navigate('/login');
+      // Google Auth now handles redirect in the authService
     } catch (error) {
       console.error('Google sign-in error in Register.js:', error);
       

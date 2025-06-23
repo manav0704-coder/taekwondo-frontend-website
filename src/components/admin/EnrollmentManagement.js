@@ -22,7 +22,7 @@ const EnrollmentManagement = () => {
     setError('');
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/enrollments/all`,
+        `https://taekwondo-website-backend.onrender.com/api/enrollments/all`,
         {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -46,7 +46,7 @@ const EnrollmentManagement = () => {
   const updateEnrollmentStatus = async (enrollmentId, newStatus) => {
     try {
       const response = await axios.put(
-        `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/enrollments/${enrollmentId}`,
+        `https://taekwondo-website-backend.onrender.com/api/enrollments/${enrollmentId}`,
         { status: newStatus },
         {
           headers: {

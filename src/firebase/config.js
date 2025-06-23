@@ -3,36 +3,52 @@ import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getAnalytics } from "firebase/analytics";
 
 // ============================================================
-// Firebase configuration with correct project details
+// Firebase configuration with environment variables
 // ============================================================
 const firebaseConfig = {
-  apiKey: "AIzaSyB0EpxWkYql0UVCqToDSlbLI87RTyGycLc",
-  authDomain: "taekwondo-association-6bd14.firebaseapp.com",
-  projectId: "taekwondo-association-6bd14",
-  storageBucket: "taekwondo-association-6bd14.firebasestorage.app",
-  messagingSenderId: "97425352266",
-  appId: "1:97425352266:web:d990851a923c46a08de8b3",
-  measurementId: "G-KG538TSBFD"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-// Initialize Analytics
+// Only initialize Firebase if configuration is available
+let app = null;
+let auth = null;
 let analytics = null;
-try {
-  analytics = getAnalytics(app);
-} catch (error) {
-  // Analytics might not work in SSR or some environments
-  console.log("Analytics initialization error:", error);
+let googleProvider = null;
+
+if (firebaseConfig.apiKey) {
+  try {
+    // Initialize Firebase
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    
+    // Initialize Analytics in browsers only
+    if (typeof window !== 'undefined') {
+      try {
+        analytics = getAnalytics(app);
+      } catch (error) {
+        console.log("Analytics initialization error:", error);
+      }
+    }
+    
+    // Configure Google provider with custom parameters
+    googleProvider = new GoogleAuthProvider();
+    
+    // Add scopes if needed
+    googleProvider.addScope('https://www.googleapis.com/auth/userinfo.email');
+    googleProvider.addScope('https://www.googleapis.com/auth/userinfo.profile');
+    
+    console.log("Firebase initialized successfully");
+  } catch (error) {
+    console.error("Firebase initialization error:", error);
+  }
+} else {
+  console.warn("Firebase configuration is missing or incomplete");
 }
-
-// Configure Google provider with custom parameters
-const googleProvider = new GoogleAuthProvider();
-
-// Add scopes if needed
-googleProvider.addScope('https://www.googleapis.com/auth/userinfo.email');
-googleProvider.addScope('https://www.googleapis.com/auth/userinfo.profile');
 
 export { auth, googleProvider, analytics }; 

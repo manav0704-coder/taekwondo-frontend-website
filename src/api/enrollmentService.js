@@ -1,8 +1,8 @@
 import axios from 'axios';
 import API from './axios';
 
-// Get base URL for direct calls
-const BASE_URL = 'http://localhost:5000/api';
+// Always use deployed API
+const BASE_URL = 'https://taekwondo-website-backend.onrender.com/api';
 
 // Service for handling enrollment-related API calls
 const EnrollmentService = {
@@ -12,7 +12,6 @@ const EnrollmentService = {
       console.log('EnrollmentService: Submitting enrollment data');
       console.log('API base URL:', BASE_URL);
       console.log('Token available:', !!token);
-      console.log('Token value:', token);
       
       // Try direct axios call first
       try {
@@ -59,12 +58,36 @@ const EnrollmentService = {
   // Get user's enrollments
   getUserEnrollments: async (token) => {
     try {
-      const response = await API.get('/enrollments', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      return response.data;
+      console.log('Fetching user enrollments with token:', token ? 'Token available' : 'No token');
+      
+      // Try direct axios call first for better debugging
+      try {
+        const url = `${BASE_URL}/enrollments`;
+        console.log('Making direct enrollment fetch request to:', url);
+        
+        const directResponse = await axios({
+          method: 'get',
+          url: url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        console.log('Direct enrollment fetch successful:', directResponse.status);
+        return directResponse.data;
+      } catch (directError) {
+        console.error('Direct enrollment fetch failed:', directError.message);
+        console.log('Falling back to API instance');
+        
+        // Fall back to API instance
+        const response = await API.get('/enrollments', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        return response.data;
+      }
     } catch (error) {
       console.error('EnrollmentService Error:', error);
       throw error;

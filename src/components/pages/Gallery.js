@@ -1,32 +1,56 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { FaSearch, FaFilter } from 'react-icons/fa';
 
-// Define direct URLs to images in the public folder
+// Import images directly from assets
+import photo1 from '../../assets/images/photo-1.jpg';
+import photo3 from '../../assets/images/photo-3.png';
+import photo5 from '../../assets/images/photo-5.png';
+import event1 from '../../assets/images/event-1-img.jpg';
+import event2 from '../../assets/images/event-2-img.jpg';
+import event3 from '../../assets/images/event-3-img.jpg';
+import event4 from '../../assets/images/event-4-img.jpg';
+import event5 from '../../assets/images/event-5-img.jpg';
+import stateTaekwondoChampionship from '../../assets/images/Maharashtra-State-Taekwondo-Championship-2023.jpeg';
+import summerTrainingCamp from '../../assets/images/Taekwondo-Summer-Training-Camp.jpeg';
+import beltCeremony from '../../assets/images/Belt-Promotion-Ceremony.jpg';
+import stateChampionshipWinners from '../../assets/images/State-Championship-Winners.jpg';
+
+// Define direct URLs to images in the public folder - keeping as fallback
 const publicImages = {
+  // Event images
+  event1: `${process.env.PUBLIC_URL}/images/event-1-img.jpg`,
+  event2: `${process.env.PUBLIC_URL}/images/event-2-img.jpg`,
+  event3: `${process.env.PUBLIC_URL}/images/event-3-img.jpg`,
+  event4: `${process.env.PUBLIC_URL}/images/event-4-img.jpg`,
+  event5: `${process.env.PUBLIC_URL}/images/event-5-img.jpg`,
+  // Photo images
+  photo1: `${process.env.PUBLIC_URL}/images/photo-1.jpg`,
+  photo3: `${process.env.PUBLIC_URL}/images/photo-3.png`,
+  photo5: `${process.env.PUBLIC_URL}/images/photo-5.png`,
+  // Other images
   stateTaekwondoChampionship: `${process.env.PUBLIC_URL}/images/Maharashtra-State-Taekwondo-Championship-2023.jpeg`,
   summerTrainingCamp: `${process.env.PUBLIC_URL}/images/Taekwondo-Summer-Training-Camp.jpeg`,
   beltCeremony: `${process.env.PUBLIC_URL}/images/Belt-Promotion-Ceremony.jpg`,
   stateChampionshipWinners: `${process.env.PUBLIC_URL}/images/State-Championship-Winners.jpg`,
-  childrenProgram: `${process.env.PUBLIC_URL}/images/children-program.jpeg`,
-  teensProgram: `${process.env.PUBLIC_URL}/images/teens-program.jpeg`,
-  adultsProgram: `${process.env.PUBLIC_URL}/images/adults-program.jpeg`,
-  competitionProgram: `${process.env.PUBLIC_URL}/images/competition-program.jpeg`,
-  blackBeltProgram: `${process.env.PUBLIC_URL}/images/black-belt-program.jpeg`,
-  instructorProgram: `${process.env.PUBLIC_URL}/images/instructor-program.jpeg`,
 };
 
 // Absolute URLs as a secondary fallback
 const absoluteUrls = {
+  // Event images
+  event1: '/images/event-1-img.jpg',
+  event2: '/images/event-2-img.jpg',
+  event3: '/images/event-3-img.jpg',
+  event4: '/images/event-4-img.jpg',
+  event5: '/images/event-5-img.jpg',
+  // Photo images
+  photo1: '/images/photo-1.jpg',
+  photo3: '/images/photo-3.png',
+  photo5: '/images/photo-5.png',
+  // Other images
   stateTaekwondoChampionship: '/images/Maharashtra-State-Taekwondo-Championship-2023.jpeg',
   summerTrainingCamp: '/images/Taekwondo-Summer-Training-Camp.jpeg',
   beltCeremony: '/images/Belt-Promotion-Ceremony.jpg',
   stateChampionshipWinners: '/images/State-Championship-Winners.jpg',
-  childrenProgram: '/images/children-program.jpeg',
-  teensProgram: '/images/teens-program.jpeg',
-  adultsProgram: '/images/adults-program.jpeg',
-  competitionProgram: '/images/competition-program.jpeg',
-  blackBeltProgram: '/images/black-belt-program.jpeg',
-  instructorProgram: '/images/instructor-program.jpeg',
 };
 
 // Image Component with multiple fallbacks
@@ -156,37 +180,14 @@ const Gallery = () => {
     
     console.log('Loading demo gallery items');
     
-    // Direct paths directly using publicImages (which already include process.env.PUBLIC_URL)
-    const directPaths = publicImages;
-    
-    // Check if each image is accessible
-    const testImageLoad = (src, name) => {
-      const img = new Image();
-      img.onload = () => console.log(`✓ Image loaded successfully: ${name}`);
-      img.onerror = () => console.error(`✗ Failed to load image: ${name}`);
-      img.src = src;
-    };
-    
-    // Test each image
-    Object.entries(directPaths).forEach(([name, path]) => {
-      testImageLoad(path, name);
-    });
-    
-    // Helper to get image source (simplified as we're now using absolute paths)
-    const getImageSource = (imagePath) => {
-      return imagePath || 'https://via.placeholder.com/800x600?text=Image+Not+Available';
-    };
-    
-    // Rest of the function remains the same
-    console.log('Image paths:', directPaths);
-    
+    // Use directly imported images instead of paths
     return [
       {
         _id: '1',
         title: 'State Championship Winners',
         description: 'Our team showing the medals from the Maharashtra State Championship.',
         mediaType: 'image',
-        mediaUrl: getImageSource(directPaths.stateChampionshipWinners),
+        mediaUrl: stateChampionshipWinners,
         category: 'tournament',
         tags: ['competition', 'medals', 'winners', 'championship'],
         isPublic: true,
@@ -197,7 +198,7 @@ const Gallery = () => {
         title: 'Training Session',
         description: 'Students practicing high kicks during training.',
         mediaType: 'image',
-        mediaUrl: getImageSource(directPaths.teensProgram),
+        mediaUrl: photo1,
         category: 'training',
         tags: ['practice', 'kicks', 'technique', 'training'],
         isPublic: true,
@@ -208,7 +209,7 @@ const Gallery = () => {
         title: 'Poomsae Demonstration',
         description: 'Master Kim demonstrating advanced Poomsae techniques.',
         mediaType: 'image',
-        mediaUrl: getImageSource(directPaths.adultsProgram),
+        mediaUrl: photo3,
         category: 'demonstration',
         tags: ['poomsae', 'forms', 'master', 'technique'],
         isPublic: true,
@@ -219,7 +220,7 @@ const Gallery = () => {
         title: 'Belt Ceremony',
         description: 'Students receiving their new belts at the quarterly ceremony.',
         mediaType: 'image',
-        mediaUrl: getImageSource(directPaths.beltCeremony),
+        mediaUrl: beltCeremony,
         category: 'belt-ceremony',
         tags: ['promotion', 'belts', 'ceremony', 'achievement'],
         isPublic: true,
@@ -229,9 +230,8 @@ const Gallery = () => {
         _id: '5',
         title: 'International Competition Highlights',
         description: 'Highlights from our participation in the International Taekwondo Championship.',
-        mediaType: 'video',
-        mediaUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-        thumbnailUrl: getImageSource(directPaths.competitionProgram),
+        mediaType: 'image',
+        mediaUrl: photo5,
         category: 'tournament',
         tags: ['competition', 'international', 'highlights', 'championship'],
         isPublic: true,
@@ -242,7 +242,7 @@ const Gallery = () => {
         title: 'Children\'s Class',
         description: 'Our little champions learning the basics of Taekwondo.',
         mediaType: 'image',
-        mediaUrl: getImageSource(directPaths.childrenProgram),
+        mediaUrl: event1,
         category: 'training',
         tags: ['children', 'beginners', 'learning', 'basics'],
         isPublic: true,
@@ -250,67 +250,67 @@ const Gallery = () => {
       },
       {
         _id: '7',
-        title: 'Breaking Demonstration',
-        description: 'Master Lee demonstrating board breaking techniques.',
+        title: 'Summer Training Camp',
+        description: 'Intensive training sessions at our annual summer camp.',
         mediaType: 'image',
-        mediaUrl: getImageSource(directPaths.blackBeltProgram),
-        category: 'demonstration',
-        tags: ['breaking', 'boards', 'power', 'technique'],
-        isPublic: true,
-        uploadedAt: formatDateString(oneMonthAgo)
-      },
-      {
-        _id: '8',
-        title: 'Annual Celebration',
-        description: 'Team celebrating our academy\'s 10th anniversary.',
-        mediaType: 'image',
-        mediaUrl: getImageSource(directPaths.instructorProgram),
-        category: 'celebration',
-        tags: ['anniversary', 'celebration', 'team', 'event'],
+        mediaUrl: summerTrainingCamp,
+        category: 'training',
+        tags: ['camp', 'summer', 'intensive', 'outdoor'],
         isPublic: true,
         uploadedAt: formatDateString(twoMonthsAgo)
       },
       {
-        _id: '9',
-        title: 'Grandmaster Kim Seminar',
-        description: 'Special training seminar with Grandmaster Kim from South Korea.',
+        _id: '8',
+        title: 'Black Belt Graduation',
+        description: 'Proud moment for our students achieving black belt status.',
         mediaType: 'image',
-        mediaUrl: getImageSource(directPaths.summerTrainingCamp),
-        category: 'seminar',
-        tags: ['seminar', 'grandmaster', 'special', 'training'],
+        mediaUrl: event2,
+        category: 'belt-ceremony',
+        tags: ['black belt', 'graduation', 'achievement', 'ceremony'],
+        isPublic: true,
+        uploadedAt: formatDateString(oneMonthAgo)
+      },
+      {
+        _id: '9',
+        title: 'Sparring Practice',
+        description: 'Students practicing sparring techniques with protective gear.',
+        mediaType: 'image',
+        mediaUrl: event3,
+        category: 'training',
+        tags: ['sparring', 'practice', 'protective gear', 'technique'],
         isPublic: true,
         uploadedAt: formatDateString(threeMonthsAgo)
       },
       {
         _id: '10',
-        title: 'National Team Selection',
-        description: 'Our athletes who made it to the national team selection.',
+        title: 'Maharashtra State Championship',
+        description: 'Our team competing at the Maharashtra State Taekwondo Championship.',
         mediaType: 'image',
-        mediaUrl: getImageSource(directPaths.stateTaekwondoChampionship),
+        mediaUrl: stateTaekwondoChampionship,
         category: 'tournament',
-        tags: ['national', 'selection', 'team', 'elite'],
-        isPublic: true,
-        uploadedAt: formatDateString(oneMonthAgo)
-      },
-      {
-        _id: '11',
-        title: 'Team Building Exercise',
-        description: 'Our instructors participating in team building activities.',
-        mediaType: 'image',
-        mediaUrl: getImageSource(directPaths.instructorProgram),
-        category: 'other',
-        tags: ['team', 'instructors', 'building', 'activities'],
+        tags: ['competition', 'state', 'championship', 'team'],
         isPublic: true,
         uploadedAt: formatDateString(twoMonthsAgo)
       },
       {
-        _id: '12',
-        title: 'Sparring Techniques',
-        description: 'Advanced sparring techniques demonstrated by senior students.',
+        _id: '11',
+        title: 'Breaking Demonstration',
+        description: 'Master Lee demonstrating board breaking techniques.',
         mediaType: 'image',
-        mediaUrl: getImageSource(directPaths.competitionProgram),
+        mediaUrl: event4,
+        category: 'demonstration',
+        tags: ['breaking', 'boards', 'power', 'demonstration'],
+        isPublic: true,
+        uploadedAt: formatDateString(oneMonthAgo)
+      },
+      {
+        _id: '12',
+        title: 'Team Building Exercise',
+        description: 'Students participating in team building activities.',
+        mediaType: 'image',
+        mediaUrl: event5,
         category: 'training',
-        tags: ['sparring', 'advanced', 'techniques', 'combat'],
+        tags: ['team building', 'cooperation', 'activities', 'teamwork'],
         isPublic: true,
         uploadedAt: formatDateString(threeMonthsAgo)
       }
@@ -577,19 +577,14 @@ const Gallery = () => {
     <div className="bg-gray-50 min-h-screen pb-12">
       {/* Hero Section */}
       <div className="relative h-[500px] overflow-hidden">
-        {/* Video Background */}
+        {/* Image Background */}
         <div className="absolute inset-0 w-full h-full">
-          <video 
+          <img 
+            src={event1} 
+            alt="Gallery Hero" 
             className="absolute inset-0 object-cover w-full h-full"
-            autoPlay 
-            muted 
-            loop
-            playsInline
-          >
-            <source src={require("../../assets/video/hybrron.mp4")} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          <div className="absolute inset-0 bg-black opacity-40"></div>
+          />
+          <div className="absolute inset-0 bg-black opacity-50"></div>
         </div>
         
         {/* Content */}
@@ -936,47 +931,35 @@ const Gallery = () => {
                 </div>
                 <div className="md:w-1/2">
                   <div className="grid grid-cols-3 gap-2">
-                    <GalleryImage
-                      src={publicImages.stateTaekwondoChampionship} 
-                      alt="Achievement"
+                    <img 
+                      src={event1} 
+                      alt="Achievement" 
                       className="rounded-lg h-24 w-full object-cover"
-                      fallbackSrc={absoluteUrls.stateTaekwondoChampionship}
-                      placeholderSrc="https://via.placeholder.com/200x150?text=Image+Not+Available"
                     />
-                    <GalleryImage
-                      src={publicImages.childrenProgram} 
-                      alt="Achievement"
+                    <img 
+                      src={event2} 
+                      alt="Achievement" 
                       className="rounded-lg h-24 w-full object-cover"
-                      fallbackSrc={absoluteUrls.childrenProgram}
-                      placeholderSrc="https://via.placeholder.com/200x150?text=Image+Not+Available"
                     />
-                    <GalleryImage
-                      src={publicImages.adultsProgram} 
-                      alt="Achievement"
+                    <img 
+                      src={event3} 
+                      alt="Achievement" 
                       className="rounded-lg h-24 w-full object-cover"
-                      fallbackSrc={absoluteUrls.adultsProgram}
-                      placeholderSrc="https://via.placeholder.com/200x150?text=Image+Not+Available"
                     />
-                    <GalleryImage
-                      src={publicImages.competitionProgram} 
-                      alt="Achievement"
+                    <img 
+                      src={event4} 
+                      alt="Achievement" 
                       className="rounded-lg h-24 w-full object-cover"
-                      fallbackSrc={absoluteUrls.competitionProgram}
-                      placeholderSrc="https://via.placeholder.com/200x150?text=Image+Not+Available"
                     />
-                    <GalleryImage
-                      src={publicImages.blackBeltProgram} 
-                      alt="Achievement"
+                    <img 
+                      src={event5} 
+                      alt="Achievement" 
                       className="rounded-lg h-24 w-full object-cover"
-                      fallbackSrc={absoluteUrls.blackBeltProgram}
-                      placeholderSrc="https://via.placeholder.com/200x150?text=Image+Not+Available"
                     />
-                    <GalleryImage
-                      src={publicImages.stateChampionshipWinners} 
-                      alt="Achievement"
+                    <img 
+                      src={photo1} 
+                      alt="Achievement" 
                       className="rounded-lg h-24 w-full object-cover"
-                      fallbackSrc={absoluteUrls.stateChampionshipWinners}
-                      placeholderSrc="https://via.placeholder.com/200x150?text=Image+Not+Available"
                     />
                   </div>
                 </div>

@@ -1,3 +1,9 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+
+# Disallow sensitive routes
+Disallow: /profile
+Disallow: /admin
+
+Sitemap: https://taekwondo-frontend.onrender.com/sitemap.xml

@@ -1,6 +1,6 @@
 {
-  "name": "client",
-  "version": "0.1.0",
+  "name": "taekwondo-frontend",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@heroicons/react": "^2.0.18",
@@ -18,9 +18,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "set PORT=3000 && react-scripts start",
-    "start:network": "set PORT=3000 && set DANGEROUSLY_DISABLE_HOST_CHECK=true && react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-scripts start",
+    "build": "node build.js",
+    "build:windows": "node build.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -42,9 +42,15 @@
       "last 1 safari version"
     ]
   },
-  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "description": "Maharashtra Taekwondo Federation - Official Website",
   "main": "index.js",
-  "keywords": [],
+  "keywords": [
+    "taekwondo",
+    "martial arts",
+    "sports",
+    "maharashtra",
+    "federation"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {

@@ -3,10 +3,14 @@ import { Link } from 'react-router-dom';
 import { FaMedal, FaTrophy, FaHandshake, FaUniversity, FaUsers, FaHeart, FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock } from 'react-icons/fa';
 
 // Import images
-import founderImg from '../../assets/images/Grandmaster-Rajesh-Deshmukh.jpg';
-import presidentImg from '../../assets/images/Master-Anil-Shrama.jpeg';
+// Import all master images
+import master1Img from '../../assets/images/master-1.jpg';
+import master2Img from '../../assets/images/master-2.jpg';
+import master3Img from '../../assets/images/master-3.jpg';
+import master4Img from '../../assets/images/master-4.jpg';
+import master5Img from '../../assets/images/master-5.jpg';
+import master6Img from '../../assets/images/master-6.jpg';
 import heroImg from '../../assets/images/programs-hero.jpg';
-import stateChampionshipWinners from '../../assets/images/State-Championship-Winners.jpg';
 
 const About = () => {
   const [activeTab, setActiveTab] = useState('history');
@@ -45,34 +49,96 @@ const About = () => {
     }
   ];
 
-  // Team members data
+  // Team members data - Prajakta Jagtap and Akshada Harke moved to the top
   const teamMembers = [
     {
-      id: 1,
-      name: "Grandmaster Rajesh Deshmukh",
-      title: "Founder & Chief Instructor",
-      rank: "8th Dan Black Belt",
-      bio: "Grandmaster Rajesh Deshmukh founded the All Maharashtra Taekwondo Association in 1985 after training extensively in South Korea. With over 45 years of experience, he has trained numerous national and international champions and has been recognized with the Lifetime Achievement Award by the World Taekwondo Federation.",
-      image: founderImg,
+      id: 5,
+      name: "Prajakta Jagtap",
+      title: "Instructor - Bhosari Branch",
+      rank: "1st Dan Black Belt",
+      bio: "Prajakta Jagtap is a 1st Dan black belt martial artist with impressive competition experience, including 20 national and 3 international competitions. She currently works as an instructor at the Bhosari Branch, where she inspires students with her extensive tournament background.",
+      image: master5Img,
+      imagePosition: "center 30%",
       achievements: [
-        "8th Dan Black Belt certified by Kukkiwon",
-        "National Coach (1990-2005)",
-        "International Referee Certificate",
-        "Lifetime Achievement Award (WTF)"
+        "1st Dan Black Belt",
+        "20 National Competitions",
+        "3 International Competitions",
+        "Women's Training Specialist"
+      ]
+    },
+    {
+      id: 6,
+      name: "Akshada Harke",
+      title: "Instructor - Moshi Branch",
+      rank: "Black Belt",
+      bio: "Akshada Harke is a black belt martial artist with significant competition experience, including 4 national and 1 international competitions. She currently works as an instructor at the Moshi branch, where she focuses on developing both competitive skills and personal growth in her students.",
+      image: master6Img,
+      imagePosition: "center 25%",
+      achievements: [
+        "Black Belt",
+        "4 National Competitions",
+        "1 International Competition",
+        "Youth Development Specialist"
+      ]
+    },
+    {
+      id: 1,
+      name: "Prem Lomte",
+      title: "Instructor - Dhavade Wasti, Bhosari Branch",
+      rank: "Black Belt",
+      bio: "Prem Lomte is a black belt Martial Artist with national level experience. He currently works as an instructor at the Dhavade Wasti, Bhosari Branch, where he shares his expertise and passion for Taekwondo with students of all ages.",
+      image: master1Img,
+      imagePosition: "center center",
+      achievements: [
+        "Black Belt",
+        "National Level Competitor",
+        "Certified Instructor",
+        "Specializes in Youth Training"
       ]
     },
     {
       id: 2,
-      name: "Master Anil Sharma",
-      title: "President",
-      rank: "7th Dan Black Belt",
-      bio: "Master Anil Sharma has been leading AMTA as President since 2010. After a successful competitive career with multiple national gold medals, he has dedicated himself to developing Taekwondo in Maharashtra through grassroots programs and elite athlete development initiatives.",
-      image: presidentImg,
+      name: "Sarthak Panchal",
+      title: "Instructor - Bhosari Branch",
+      rank: "Black Belt",
+      bio: "Sarthak Panchal is a black belt martial artist with national-level experience. He currently works as an instructor at the Bhosari branch, where he focuses on developing both technical skills and mental discipline in his students.",
+      image: master2Img,
+      imagePosition: "center center",
       achievements: [
-        "7th Dan Black Belt",
-        "Former National Champion (1995-1998)",
-        "Asian Games Bronze Medalist (1998)",
-        "National Referee Certification"
+        "Black Belt",
+        "National Level Competitor",
+        "Certified Instructor",
+        "Technical Skills Specialist"
+      ]
+    },
+    {
+      id: 3,
+      name: "Mujahid Shaikh",
+      title: "Instructor - Ghavane Vasti, Bhosari Branch",
+      rank: "Black Belt",
+      bio: "Mujahid Shaikh is a black belt Martial Artist with national level experience. He currently works as an instructor at the Ghavane Vasti, Bhosari Branch, where he is known for his dynamic teaching style and commitment to student development.",
+      image: master3Img,
+      imagePosition: "center 20%",
+      achievements: [
+        "Black Belt",
+        "National Level Competitor",
+        "Certified Instructor",
+        "Specializes in Combat Techniques"
+      ]
+    },
+    {
+      id: 4,
+      name: "Omkar Kusale",
+      title: "Instructor - Moshi Branch",
+      rank: "Black Belt",
+      bio: "Omkar Kusale is a black belt Martial Artist with both international and national level experience. He currently works as an instructor at the Moshi Branch, bringing his extensive competition experience to help develop the next generation of champions.",
+      image: master4Img,
+      imagePosition: "center center",
+      achievements: [
+        "Black Belt",
+        "International Competitor",
+        "National Level Competitor",
+        "Advanced Training Specialist"
       ]
     }
   ];
@@ -283,24 +349,15 @@ const About = () => {
               <div>
                 <h2 className="text-3xl font-bold mb-6 text-secondary">Our History</h2>
                 
-                <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">
-                  <div className="flex flex-col md:flex-row">
-                    <div className="md:w-1/2">
-                      <img 
-                        src={stateChampionshipWinners} 
-                        alt="AMTA Team at State Championship" 
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="p-6 md:w-1/2">
-                      <h3 className="text-xl font-bold mb-4 text-secondary">Founding & Early Years</h3>
-                      <p className="text-gray-700 mb-4">
-                        All Maharashtra Taekwondo Association was founded in 1985 by Grandmaster Rajesh Deshmukh, who brought his extensive training and experience from South Korea to Maharashtra. What began as a small training center in Pune rapidly grew into the premier Taekwondo organization in the state.
-                      </p>
-                      <p className="text-gray-700">
-                        Throughout the late 1980s and 1990s, AMTA established training centers across major cities in Maharashtra, organizing the first official state championships and developing a structured curriculum that would become the standard for Taekwondo training in the region.
-                      </p>
-                    </div>
+                <div className="bg-white rounded-lg shadow-md mb-8">
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold mb-4 text-secondary">Founding & Early Years</h3>
+                    <p className="text-gray-700 mb-4">
+                      All Maharashtra Taekwondo Association was founded in 1985 by Grandmaster Rajesh Deshmukh, who brought his extensive training and experience from South Korea to Maharashtra. What began as a small training center in Pune rapidly grew into the premier Taekwondo organization in the state.
+                    </p>
+                    <p className="text-gray-700">
+                      Throughout the late 1980s and 1990s, AMTA established training centers across major cities in Maharashtra, organizing the first official state championships and developing a structured curriculum that would become the standard for Taekwondo training in the region.
+                    </p>
                   </div>
                 </div>
                 
@@ -382,6 +439,7 @@ const About = () => {
                           src={member.image} 
                           alt={member.name} 
                           className="w-full h-full object-cover"
+                          style={{ objectPosition: member.imagePosition || "center center" }}
                         />
                       </div>
                       <div className="p-6 md:w-3/5">

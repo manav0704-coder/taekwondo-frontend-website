@@ -1,45 +1,94 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import EventService from '../../api/eventService';
 import Modal from '../common/Modal';
-import FounderContent from '../common/FounderContent';
-import PresidentContent from '../common/PresidentContent';
-import ProgramContent from '../common/ProgramContent';
 import AnniversaryContent from '../common/AnniversaryContent';
 import EventContent from '../common/EventContent';
+import { FaChevronLeft, FaChevronRight, FaCalendarAlt, FaMapMarkerAlt } from 'react-icons/fa';
 
-// Placeholder images as data URIs (very simple colored rectangles)
-const placeholderImages = {
-  heroBg: 'data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080"%3E%3Crect width="1920" height="1080" fill="%23343A40"%3E%3C/rect%3E%3C/svg%3E',
-  founder: 'data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600"%3E%3Crect width="800" height="600" fill="%23495057"%3E%3C/rect%3E%3Ctext x="400" y="300" font-family="Arial" font-size="32" fill="white" text-anchor="middle"%3EFounder Image%3C/text%3E%3C/svg%3E',
-  president: 'data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600"%3E%3Crect width="800" height="600" fill="%23495057"%3E%3C/rect%3E%3Ctext x="400" y="300" font-family="Arial" font-size="32" fill="white" text-anchor="middle"%3EITF President Image%3C/text%3E%3C/svg%3E',
-};
+// Import event images
+import event1Img from '../../assets/images/event-1-img.jpg';
+import event2Img from '../../assets/images/event-2-img.jpg';
+import event3Img from '../../assets/images/event-3-img.jpg';
+import event4Img from '../../assets/images/event-4-img.jpg';
+// eslint-disable-next-line no-unused-vars
+import event5Img from '../../assets/images/event-5-img.jpg';
+import examImg from '../../assets/images/23-feb-2025-exam.jpg';
 
-// Try to import from assets, but if there's an error, use placeholders
-let heroBgImg, founderImg, presidentImg, anniversaryImg;
+// Placeholder image as data URI (simple colored rectangle)
+const placeholderImage = 'data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080"%3E%3Crect width="1920" height="1080" fill="%23343A40"%3E%3C/rect%3E%3C/svg%3E';
+
+// Try to import hero image, but if there's an error, use placeholder
+let heroBgImg, anniversaryImg;
 try {
   heroBgImg = require('../../assets/images/hero-1.png');
-  founderImg = require('../../assets/images/Ellipse 1.png');
-  presidentImg = require('../../assets/images/Ellipse 2.png');
   anniversaryImg = require('../../assets/images/frame-1.png');
 } catch (e) {
-  heroBgImg = placeholderImages.heroBg;
-  founderImg = placeholderImages.founder;
-  presidentImg = placeholderImages.president;
-  // Use a placeholder if frame-1 image is not found
-  anniversaryImg = placeholderImages.heroBg;
+  heroBgImg = placeholderImage;
+  anniversaryImg = placeholderImage;
 }
+
+// Hero carousel slides - Using the specific requested images
+const heroSlides = [
+  {
+    image: heroBgImg,
+    title: "All Maharashtra Taekwondo Association",
+    subtitle: "TaeKwon-Do Will Exist Forever.",
+    description: "Join us in training the body and mind through the ancient Korean martial art of Taekwondo. Gain discipline, self-defense skills, and physical fitness."
+  },
+  {
+    image: event1Img,
+    title: "State Championships",
+    subtitle: "Excellence in Competition",
+    description: "Participate in prestigious state-level tournaments and competitions to test your skills against the best in Maharashtra."
+  },
+  {
+    image: event3Img,
+    title: "Master Training Workshops",
+    subtitle: "Learn from the Best",
+    description: "Special training workshops with visiting grandmasters provide unique opportunities to enhance your skills and knowledge."
+  },
+  {
+    image: event4Img,
+    title: "All-Age Training Programs",
+    subtitle: "Taekwondo for Everyone",
+    description: "From children to adults, our programs are designed to meet the needs of practitioners at all levels and ages."
+  },
+  {
+    image: examImg,
+    title: "Belt Promotion Exams",
+    subtitle: "Advancing Your Journey",
+    description: "Regular belt promotion exams showcase the dedication and progress of our students in their Taekwondo journey."
+  }
+];
 
 const Home = () => {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [founderModalOpen, setFounderModalOpen] = useState(false);
-  const [presidentModalOpen, setPresidentModalOpen] = useState(false);
   const [programModalOpen, setProgramModalOpen] = useState(false);
   const [anniversaryModalOpen, setAnniversaryModalOpen] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState(null);
   const [eventModalOpen, setEventModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Function to advance to the next slide
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev === heroSlides.length - 1 ? 0 : prev + 1));
+  }, []);
+
+  // Function to go back to the previous slide
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev === 0 ? heroSlides.length - 1 : prev - 1));
+  }, []);
+
+  // Auto-advance the carousel every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [nextSlide]);
 
   // Wrap mockEvents in useMemo to prevent it from being recreated on every render
   const mockEvents = useMemo(() => [
@@ -50,7 +99,7 @@ const Home = () => {
       date: new Date("2023-12-15"),
       location: { city: "Mumbai", state: "Maharashtra" },
       description: "Annual State championship featuring competitors from across Maharashtra in forms, sparring, and breaking divisions. Open to all belt ranks with age-appropriate divisions.",
-      image: "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='400' viewBox='0 0 800 400'%3E%3Crect width='800' height='400' fill='%23343A40'%3E%3C/rect%3E%3Ctext x='400' y='200' font-family='Arial' font-size='32' fill='white' text-anchor='middle'%3EState Championship%3C/text%3E%3C/svg%3E"
+      image: event1Img
     },
     {
       id: 2,
@@ -59,7 +108,7 @@ const Home = () => {
       date: new Date("2023-12-28"),
       location: { city: "Pune", state: "Maharashtra" },
       description: "Intensive 3-day training camp led by Grand Master Kim. Focus areas include advanced forms, competition strategy, and breaking techniques. Open to green belts and above.",
-      image: "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='400' viewBox='0 0 800 400'%3E%3Crect width='800' height='400' fill='%23343A40'%3E%3C/rect%3E%3Ctext x='400' y='200' font-family='Arial' font-size='32' fill='white' text-anchor='middle'%3ESummer Camp%3C/text%3E%3C/svg%3E"
+      image: event2Img
     },
     {
       id: 3,
@@ -68,7 +117,7 @@ const Home = () => {
       date: new Date("2024-01-20"),
       location: { city: "Nagpur", state: "Maharashtra" },
       description: "Quarterly black belt testing event. Candidates will demonstrate forms, sparring, self-defense, breaking, and theoretical knowledge. Pre-registration required.",
-      image: "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='400' viewBox='0 0 800 400'%3E%3Crect width='800' height='400' fill='%23343A40'%3E%3C/rect%3E%3Ctext x='400' y='200' font-family='Arial' font-size='32' fill='white' text-anchor='middle'%3EBlack Belt Test%3C/text%3E%3C/svg%3E"
+      image: event3Img
     }
   ], []); // Empty dependency array means this will only be created once
 
@@ -108,31 +157,49 @@ const Home = () => {
 
   return (
     <div>
-      {/* Hero Section */}
+      {/* Hero Section with Carousel */}
       <section className="hero">
-        {/* Overlay for better text visibility */}
-        <div className="overlay"></div>
+        {/* Carousel Navigation Arrows */}
+        <button 
+          className="carousel-arrow carousel-arrow-left" 
+          onClick={prevSlide}
+          aria-label="Previous slide"
+        >
+          <FaChevronLeft />
+        </button>
         
-        {/* Background image */}
-        <div 
-          className="hero-bg" 
+        <button 
+          className="carousel-arrow carousel-arrow-right" 
+          onClick={nextSlide}
+          aria-label="Next slide"
+        >
+          <FaChevronRight />
+        </button>
+        
+        {/* Carousel Slides */}
+        <div className="carousel-container">
+          {heroSlides.map((slide, index) => (
+            <div 
+              key={index}
+              className={`carousel-slide ${index === currentSlide ? 'active' : ''}`}
           style={{ 
-            backgroundImage: `url(${heroBgImg || placeholderImages.heroBg})`,
-            backgroundPosition: 'center',
-            backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat'
-          }}
-        ></div>
-        
-        <div className="container">
-          <div className="hero-content">
-            <h1>All Maharashtra Taekwondo Association</h1>
-            <p>"TaeKwon-Do Will Exist Forever."</p>
-            <p className="mb-8">
-              Join us in training the body and mind through the ancient Korean martial art of Taekwondo. 
-              Gain discipline, self-defense skills, and physical fitness.
+                backgroundImage: `url(${slide.image})`,
+                opacity: index === currentSlide ? 1 : 0,
+                transition: 'opacity 0.8s ease-in-out'
+              }}
+            >
+              {/* Overlay for better text visibility */}
+              <div className="overlay"></div>
+              
+              {/* Slide Content - Positioned at bottom left */}
+              <div className="carousel-content-wrapper">
+                <div className="carousel-content">
+                  <h1>{slide.title}</h1>
+                  <p className="subtitle">"{slide.subtitle}"</p>
+                  <p className="description">
+                    {slide.description}
             </p>
-            <div className="flex flex-wrap gap-4">
+                  <div className="carousel-buttons">
               <Link to="/programs" className="btn btn-primary">
                 Explore Programs
               </Link>
@@ -141,67 +208,21 @@ const Home = () => {
               </Link>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Founder Section */}
-      <section className="section bg-secondary-50">
-        <div className="container">
-          <div className="grid grid-cols-1 grid-cols-2">
-            <div className="flex justify-center items-center mb-4 md:mb-0">
-              <div className="rounded-full overflow-hidden w-64 h-64 border-4 border-white shadow-lg">
-                <img 
-                  src={founderImg || placeholderImages.founder} 
-                  alt="Founder of Taekwon-Do: Gen. Choi Hong Hi" 
-                  className="w-full h-full object-cover"
-                />
               </div>
             </div>
-            <div>
-              <h2 className="text-secondary">Founder Of Taekwon-Do</h2>
-              <h3 className="text-primary">Gen. Choi Hong Hi</h3>
-              <p className="mb-6 text-secondary">
-                Taekwon-Do was devised, studied and completed by Gen. Choi Hong Hi of Korea 
-                and brought into the world as modern martial arts. Gen. Choi Hong Hi had to 
-                practice Karate of Japan because Korea was under its colonial occupation for 
-                over 36 years. Korea was liberated from Japanese colonial rule in 1945.
-              </p>
-              <button onClick={() => setFounderModalOpen(true)} className="btn btn-primary">
-                Read More
-              </button>
-            </div>
-          </div>
+          ))}
         </div>
-      </section>
-
-      {/* ITF President Section */}
-      <section className="section bg-white">
-        <div className="container">
-          <div className="grid grid-cols-1 grid-cols-2">
-            <div className="order-2 md:order-1">
-              <h2 className="text-secondary">ITF President</h2>
-              <h3 className="text-primary">Prof. RI Yong Son</h3>
-              <p className="mb-6 text-secondary">
-                Dear Members,<br />
-                I on behalf of the International Taekwon-Do Federation (ITF) would like to extend 
-                my heartfelt thanks and congratulations to all the Taekwon-Doists the world over 
-                who have been devoting themselves to the worldwide development and evolution of 
-                the original Taekwon-Do.
-              </p>
-              <button onClick={() => setPresidentModalOpen(true)} className="btn btn-primary">
-                Read More
-              </button>
-            </div>
-            <div className="order-1 md:order-2 flex justify-center items-center mb-4 md:mb-0">
-              <div className="rounded-full overflow-hidden w-64 h-64 border-4 border-white shadow-lg">
-                <img 
-                  src={presidentImg || placeholderImages.president} 
-                  alt="ITF President Prof. RI Yong Son" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-          </div>
+        
+        {/* Carousel Indicators */}
+        <div className="carousel-indicators">
+          {heroSlides.map((_, index) => (
+            <button 
+              key={index} 
+              className={`carousel-indicator ${index === currentSlide ? 'active' : ''}`}
+              onClick={() => setCurrentSlide(index)}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
         </div>
       </section>
 
@@ -248,127 +269,121 @@ const Home = () => {
           {loading ? (
             <div className="text-center py-12">
               <div className="mx-auto" style={{width: "64px", height: "64px", border: "4px solid #eee", borderTopColor: "#FF6B35", borderRadius: "50%", animation: "spin 1s linear infinite"}}></div>
-              <p className="mt-6 text-secondary">Loading events...</p>
             </div>
-          ) : upcomingEvents && upcomingEvents.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {upcomingEvents.map((event) => (
-                <div key={event._id || event.id} className="card shadow-md hover:shadow-lg transition-shadow duration-300">
-                  <div style={{height: "12rem"}} className="bg-secondary-200 relative">
-                    {event.image ? (
+          ) : upcomingEvents.length > 0 ? (
+            <div className="grid grid-cols-1 gap-8">
+              {upcomingEvents.slice(0, 3).map((event) => (
+                <div key={event.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                  <div className="flex flex-col md:flex-row">
+                    <div className="relative md:w-2/5 h-48 md:h-64">
                       <img 
                         src={event.image} 
                         alt={event.title} 
                         className="w-full h-full object-cover"
                       />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-secondary-100">
-                        <span className="text-secondary">No image available</span>
+                      <div className="absolute top-0 right-0 mt-2 mr-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">
+                        {event.eventType}
                       </div>
-                    )}
-                    <div style={{position: "absolute", top: "0", right: "0", backgroundColor: "#FF6B35", color: "white", padding: "0.25rem 0.75rem", borderBottomLeftRadius: "0.5rem"}}>
-                      {event.eventType || 'Event'}
                     </div>
-                  </div>
-                  <div className="card-body p-4">
-                    <h3 className="text-secondary text-lg font-semibold">{event.title}</h3>
-                    <p className="mb-2 text-secondary text-sm">
-                      {event.date ? new Date(event.date.startDate || event.date).toLocaleDateString() : 'Upcoming'} 
-                      - {event.location ? `${event.location.city}, ${event.location.state}` : 'TBA'}
-                    </p>
-                    <p className="mb-4 text-secondary" style={{overflow: "hidden", display: "-webkit-box", WebkitLineClamp: "3", WebkitBoxOrient: "vertical", minHeight: "4.5rem"}}>
-                      {event.description || 'More details coming soon.'}
-                    </p>
-                    <button 
-                      onClick={() => openEventModal(event)} 
-                      className="text-primary font-medium hover:underline"
-                    >
-                      Learn More
-                    </button>
+                    
+                    <div className="p-4 md:w-3/5 flex flex-col justify-between">
+                      <div>
+                        <h3 className="text-xl font-bold mb-2 text-secondary">{event.title}</h3>
+                        <div className="flex items-center text-gray-600 mb-2">
+                          <FaCalendarAlt className="mr-2 text-primary" />
+                          <span>
+                            {event.date instanceof Date ? event.date.toLocaleDateString('en-US', {
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric'
+                            }) : 'Date TBA'}
+                          </span>
+                        </div>
+                        <div className="flex items-center text-gray-600 mb-3">
+                          <FaMapMarkerAlt className="mr-2 text-primary" />
+                          <span>{event.location?.city}, {event.location?.state}</span>
+                        </div>
+                        <p className="text-gray-700 mb-4 line-clamp-3">{event.description}</p>
+                      </div>
+                      
+                      <div className="flex justify-between items-center mt-auto">
+                        <button 
+                          onClick={() => openEventModal(event)} 
+                          className="text-primary font-medium hover:text-secondary transition-colors"
+                        >
+                          View Details
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-12 bg-secondary-50 rounded-xl shadow-sm">
+            <div className="text-center py-12">
               <p className="text-secondary">No upcoming events at the moment. Please check back later.</p>
             </div>
           )}
           
-          <div className="text-center mt-12">
-            <Link to="/events" className="btn btn-outline">
+          <div className="text-center mt-8">
+            <Link to="/events" className="btn btn-primary">
               View All Events
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Programs Overview */}
+      {/* Featured Programs Section */}
       <section className="section bg-secondary-50">
         <div className="container">
-          <h2 className="text-center text-secondary mb-16">Our Programs</h2>
+          <h2 className="text-center text-secondary mb-12">Our Programs</h2>
           
-          <div className="flex flex-col md:flex-row justify-center gap-8">
-            {/* Children's Program Card */}
-            <div className="card bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 w-full md:w-1/3">
-              <div className="p-6 text-center flex flex-col items-center justify-between h-full">
-                <div>
-                  <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-6 shadow-md">
-                    <span className="text-3xl text-white">🥋</span>
-                  </div>
-                  <h3 className="text-secondary text-xl font-semibold mb-3">Children's Program</h3>
-                  <p className="text-secondary mb-6">
-                    For ages 5-12. Builds confidence, discipline, and fundamental skills in a fun, 
-                    supportive environment.
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Children's Program */}
+            <div className="card bg-white">
+              <div className="card-body text-center">
+                <h3 className="card-title">Children's Program</h3>
+                <p className="card-text">
+                  Designed for children ages 4-12. Build confidence, discipline, and physical 
+                  coordination while having fun!
                   </p>
-                </div>
                 <button 
                   onClick={() => openProgramModal('children')} 
-                  className="text-primary font-medium hover:underline"
+                  className="btn btn-sm btn-outline mt-4"
                 >
                   Learn More
                 </button>
               </div>
             </div>
             
-            {/* Teen Program Card */}
-            <div className="card bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 w-full md:w-1/3">
-              <div className="p-6 text-center flex flex-col items-center justify-between h-full">
-                <div>
-                  <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-6 shadow-md">
-                    <span className="text-3xl text-white">👥</span>
-                  </div>
-                  <h3 className="text-secondary text-xl font-semibold mb-3">Teen Program</h3>
-                  <p className="text-secondary mb-6">
-                    For ages 13-17. Focuses on self-defense, fitness, and developing physical and 
-                    mental strength during crucial developmental years.
+            {/* Teens Program */}
+            <div className="card bg-white">
+              <div className="card-body text-center">
+                <h3 className="card-title">Teens Program</h3>
+                <p className="card-text">
+                  For ages 13-17, focusing on self-discipline, respect, and advanced 
+                  techniques suited for developing bodies.
                   </p>
-                </div>
                 <button 
-                  onClick={() => openProgramModal('teen')} 
-                  className="text-primary font-medium hover:underline"
+                  onClick={() => openProgramModal('teens')} 
+                  className="btn btn-sm btn-outline mt-4"
                 >
                   Learn More
                 </button>
               </div>
             </div>
             
-            {/* Adult Program Card */}
-            <div className="card bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 w-full md:w-1/3">
-              <div className="p-6 text-center flex flex-col items-center justify-between h-full">
-                <div>
-                  <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-6 shadow-md">
-                    <span className="text-3xl text-white">🏆</span>
-                  </div>
-                  <h3 className="text-secondary text-xl font-semibold mb-3">Competition Team</h3>
-                  <p className="text-secondary mb-6">
-                    Advanced training for students interested in competing at regional, national, 
-                    and international levels.
+            {/* Adults Program */}
+            <div className="card bg-white">
+              <div className="card-body text-center">
+                <h3 className="card-title">Adults Program</h3>
+                <p className="card-text">
+                  Complete fitness while learning self-defense. Great stress relief and 
+                  community for adults of all ages.
                   </p>
-                </div>
                 <button 
-                  onClick={() => openProgramModal('competition')} 
-                  className="text-primary font-medium hover:underline"
+                  onClick={() => openProgramModal('adults')} 
+                  className="btn btn-sm btn-outline mt-4"
                 >
                   Learn More
                 </button>
@@ -376,79 +391,23 @@ const Home = () => {
             </div>
           </div>
           
-          <div className="text-center mt-16">
-            <button 
-              onClick={() => openProgramModal('teenAdult')} 
-              className="btn btn-primary btn-lg"
-            >
+          <div className="text-center mt-8">
+            <Link to="/programs" className="btn btn-primary">
               Explore All Programs
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="cta bg-primary text-white py-16">
-        <div className="container text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Begin Your Taekwondo Journey?</h2>
-          <p className="text-lg mb-8">
-            Join Maharashtra Taekwondo Federation today and start your journey toward mastering 
-            this ancient martial art. Our experienced instructors will guide you every step of the way.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/enroll" className="btn bg-white text-primary">
-              Enroll Now
-            </Link>
-            <Link to="/contact" className="btn btn-outline border-white text-white hover:bg-white hover:text-primary">
-              Contact Us
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Founder Modal */}
-      <Modal 
-        isOpen={founderModalOpen} 
-        onClose={() => setFounderModalOpen(false)} 
-        title="Gen. Choi Hong Hi - Founder of Taekwon-Do"
-      >
-        <FounderContent />
-      </Modal>
-
-      {/* President Modal */}
-      <Modal 
-        isOpen={presidentModalOpen} 
-        onClose={() => setPresidentModalOpen(false)} 
-        title="Prof. RI Yong Son - ITF President"
-      >
-        <PresidentContent />
-      </Modal>
-
-      {/* Program Modal */}
-      <Modal
-        isOpen={programModalOpen}
-        onClose={() => setProgramModalOpen(false)}
-        title={
-          selectedProgram === 'children' ? "Children's Program" :
-          selectedProgram === 'teen' ? "Teen Program" :
-          selectedProgram === 'teenAdult' ? "Teen & Adult Program" :
-          selectedProgram === 'competition' ? "Competition Team" : 
-          "Program Details"
-        }
-      >
-        {selectedProgram && <ProgramContent programType={selectedProgram} />}
-      </Modal>
-
-      {/* Anniversary Modal */}
+      {/* Modals */}
       <Modal
         isOpen={anniversaryModalOpen}
         onClose={() => setAnniversaryModalOpen(false)}
-        title="Celebrating 70 Years of Taekwon-Do"
+        title="70 Years of Taekwon-Do"
       >
         <AnniversaryContent />
       </Modal>
 
-      {/* Event Modal */}
       <Modal
         isOpen={eventModalOpen}
         onClose={() => setEventModalOpen(false)}
@@ -456,6 +415,238 @@ const Home = () => {
       >
         {selectedEvent && <EventContent event={selectedEvent} />}
       </Modal>
+
+      <Modal 
+        isOpen={programModalOpen} 
+        onClose={() => setProgramModalOpen(false)}
+        title={selectedProgram ? `${selectedProgram.charAt(0).toUpperCase() + selectedProgram.slice(1)}'s Program` : "Program Details"}
+      >
+        <div>
+          {selectedProgram && (
+            <div>
+              <p className="mb-4">
+                Our {selectedProgram} program is designed to help participants develop physical fitness, 
+                mental discipline, and self-defense skills in a safe and supportive environment.
+              </p>
+              <h3 className="text-lg font-bold mb-2">Benefits:</h3>
+              <ul className="list-disc pl-5 mb-4">
+                <li>Physical fitness and coordination</li>
+                <li>Self-discipline and focus</li>
+                <li>Self-defense skills</li>
+                <li>Confidence building</li>
+                <li>Respect for self and others</li>
+              </ul>
+              <p>
+                Visit our Programs page or contact us directly to learn more about class schedules 
+                and registration information.
+              </p>
+            </div>
+          )}
+        </div>
+      </Modal>
+
+      {/* Custom CSS for carousel and animations */}
+      <style jsx="true">{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        
+        .hero {
+          position: relative;
+          height: 100vh;
+          min-height: 600px;
+          overflow: hidden;
+        }
+        
+        .carousel-container {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+        }
+        
+        .carousel-slide {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+          transition: opacity 0.8s ease-in-out;
+        }
+        
+        .carousel-slide.active {
+          z-index: 1;
+        }
+        
+        .overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.2) 70%, rgba(0,0,0,0.2) 100%);
+          z-index: 1;
+        }
+        
+        .carousel-content-wrapper {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          z-index: 2;
+        }
+        
+        .carousel-content {
+          color: white;
+          text-align: left;
+          padding: 2rem 4rem 4rem;
+          max-width: 800px;
+        }
+        
+        .carousel-content h1 {
+          font-size: 3.5rem;
+          font-weight: bold;
+          margin-bottom: 0.5rem;
+          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+          line-height: 1.2;
+        }
+        
+        .carousel-content .subtitle {
+          font-size: 1.8rem;
+          font-style: italic;
+          margin-bottom: 1rem;
+          text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        }
+        
+        .carousel-content .description {
+          font-size: 1.2rem;
+          margin-bottom: 1.5rem;
+          max-width: 600px;
+          line-height: 1.5;
+          text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+        }
+        
+        .carousel-buttons {
+          display: flex;
+          gap: 1rem;
+          margin-top: 1.5rem;
+        }
+        
+        .carousel-arrow {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          background: rgba(255, 255, 255, 0.3);
+          color: white;
+          border: none;
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          font-size: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: background 0.3s ease;
+          z-index: 10;
+        }
+        
+        .carousel-arrow:hover {
+          background: rgba(255, 255, 255, 0.5);
+        }
+        
+        .carousel-arrow-left {
+          left: 20px;
+        }
+        
+        .carousel-arrow-right {
+          right: 20px;
+        }
+        
+        .carousel-indicators {
+          position: absolute;
+          bottom: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          gap: 10px;
+          z-index: 10;
+        }
+        
+        .carousel-indicator {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.5);
+          border: none;
+          cursor: pointer;
+          transition: background 0.3s ease;
+        }
+        
+        .carousel-indicator.active {
+          background: white;
+        }
+        
+        /* Responsive styling */
+        @media (max-width: 768px) {
+          .hero {
+            height: 100vh;
+            min-height: 500px;
+          }
+          
+          .carousel-content {
+            padding: 1.5rem 2rem 3rem;
+          }
+          
+          .carousel-content h1 {
+            font-size: 2.2rem;
+          }
+          
+          .carousel-content .subtitle {
+            font-size: 1.4rem;
+          }
+          
+          .carousel-content .description {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+          }
+          
+          .carousel-arrow {
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+          }
+        }
+        
+        /* Even smaller screens */
+        @media (max-width: 480px) {
+          .carousel-content {
+            padding: 1rem 1.5rem 2.5rem;
+          }
+          
+          .carousel-content h1 {
+            font-size: 1.8rem;
+          }
+          
+          .carousel-content .subtitle {
+            font-size: 1.2rem;
+          }
+          
+          .carousel-content .description {
+            font-size: 0.9rem;
+          }
+          
+          .carousel-buttons {
+            flex-direction: column;
+            gap: 0.5rem;
+          }
+        }
+      `}</style>
     </div>
   );
 };

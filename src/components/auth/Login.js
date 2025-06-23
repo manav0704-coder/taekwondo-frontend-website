@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useNotification } from '../../context/NotificationContext';
@@ -12,14 +12,25 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const [submitError, setSubmitError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [redirectPath, setRedirectPath] = useState(null);
 
   const { login } = useAuth();
   const { showError } = useNotification();
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Get the redirect path from location state or default to homepage
-  const from = location.state?.from?.pathname || '/';
+  // Check for stored redirect path on component mount
+  useEffect(() => {
+    const storedRedirect = sessionStorage.getItem('redirectAfterLogin');
+    if (storedRedirect) {
+      setRedirectPath(storedRedirect);
+      // Clear the stored path once retrieved
+      sessionStorage.removeItem('redirectAfterLogin');
+    }
+  }, []);
+
+  // Get the redirect path from location state, sessionStorage, or default to homepage
+  const from = redirectPath || location.state?.from?.pathname || '/';
 
   // Custom styled welcome notification
   const showWelcomeNotification = (userName) => {
@@ -107,6 +118,11 @@ const Login = () => {
       const userData = await login(formData);
       // Display welcome notification after successful login
       showWelcomeNotification(userData.user.name);
+      
+      // Debug logging for redirect paths
+      console.log('Login successful. Redirecting to:', from);
+      console.log('User data:', userData.user);
+      
       // Navigate to the redirect path after successful login
       navigate(from, { replace: true });
     } catch (error) {

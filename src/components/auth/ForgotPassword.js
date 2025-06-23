@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNotification } from '../../context/NotificationContext';
+import { checkServerHealth, testDatabaseConnection } from '../../utils/serverHealth';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -11,28 +12,39 @@ const ForgotPassword = () => {
   const [success, setSuccess] = useState('');
   const { showError, showLoading, updateNotification } = useNotification();
 
-  // Check if auth routes are working on component mount
+  // Check if server and database are working on component mount
   useEffect(() => {
-    const testRoutes = async () => {
+    const checkServerAndDatabase = async () => {
       try {
-        // Test direct API access with both endpoints
-        const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-        console.log('Testing API connection to:', baseUrl);
-        
-        // Test the auth test endpoint
-        try {
-          const testResponse = await axios.get(`${baseUrl}/api/auth/test`);
-          console.log('Auth test endpoint response:', testResponse.data);
-        } catch (testError) {
-          console.error('Auth test endpoint error:', testError.message);
+        // Check server health
+        const healthStatus = await checkServerHealth();
+        if (!healthStatus.isHealthy) {
+          console.error('Server health check failed:', healthStatus.error);
+          setError('Server is not responding. Please try again later.');
+          return;
         }
+        
+        // Test database connection
+        const dbStatus = await testDatabaseConnection();
+        if (!dbStatus.isConnected) {
+          console.error('Database connection issue:', dbStatus.message);
+          setError('Database connection issue. Please try again later.');
+          return;
+        }
+        
+        console.log('Server and database are working properly');
       } catch (err) {
-        console.error('API connection test failed:', err.message);
+        console.error('Server check failed:', err.message);
       }
     };
 
-    testRoutes();
+    checkServerAndDatabase();
   }, []);
+
+  const validateEmail = (email) => {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,6 +52,12 @@ const ForgotPassword = () => {
     if (!email) {
       setError('Please enter your email address');
       showError('Please enter your email address');
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setError('Please enter a valid email address');
+      showError('Please enter a valid email address');
       return;
     }
     
@@ -52,8 +70,10 @@ const ForgotPassword = () => {
     try {
       console.log('Sending password reset request for:', email);
       
-      // Use direct axios call with detailed error handling
-      const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      // Define baseUrl with deployed URL from environment or default to render URL
+      const baseUrl = process.env.REACT_APP_API_URL || 'https://taekwondo-website-backend.onrender.com';
+      
+      // Make the API call
       const endpoint = `${baseUrl}/api/auth/forgot-password`;
       console.log('Making request to:', endpoint);
       
@@ -63,7 +83,9 @@ const ForgotPassword = () => {
         data: { email },
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        // Add timeout to prevent hanging requests
+        timeout: 20000
       });
       
       console.log('Password reset response:', response.data);
@@ -163,6 +185,9 @@ const ForgotPassword = () => {
                 </div>
                 <div className="ml-3">
                   <p className="text-sm text-green-700 font-medium">{success}</p>
+                  <p className="text-xs text-green-600 mt-1">
+                    Please check both your inbox and spam folder.
+                  </p>
                 </div>
               </div>
             </div>
@@ -206,27 +231,25 @@ const ForgotPassword = () => {
                       Sending...
                     </>
                   ) : (
-                    'Send Reset Instructions'
+                    'Send Reset Link'
                   )}
                 </button>
               </div>
             </form>
           ) : (
             <div className="text-center">
-              <p className="mt-2 text-sm text-gray-600">
-                Check your email for the password reset link. If you don't see it, check your spam folder.
-              </p>
-              <div className="mt-6">
+              <p className="mt-4 text-sm text-gray-600">
+                Don't see the email? Check your spam folder or
                 <button
                   onClick={() => {
                     setIsSubmitted(false);
                     setSuccess('');
                   }}
-                  className="text-sm font-medium text-primary hover:text-primary-dark"
+                  className="ml-1 text-primary hover:text-primary-dark focus:outline-none focus:underline transition ease-in-out duration-150"
                 >
-                  Try another email
+                  try again
                 </button>
-              </div>
+              </p>
             </div>
           )}
 
@@ -237,23 +260,17 @@ const ForgotPassword = () => {
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-2 bg-white text-gray-500">
-                  Or
+                  Remember your password?
                 </span>
               </div>
             </div>
 
-            <div className="mt-6 grid grid-cols-2 gap-3">
+            <div className="mt-6">
               <Link
                 to="/login"
-                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-primary bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
               >
                 Back to Login
-              </Link>
-              <Link
-                to="/register"
-                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
-              >
-                Create Account
               </Link>
             </div>
           </div>

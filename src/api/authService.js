@@ -50,17 +50,50 @@ const AuthService = {
           photoURL: result.user.photoURL || ''
         };
         
+        console.log('Google authentication successful, sending data to backend:', userData);
+        
         // Register or login with the backend
         try {
           const response = await API.post('/auth/google', userData);
           if (response.data.token) {
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('user', JSON.stringify(response.data.user));
+            
+            // Automatically redirect to home page after successful Google login
+            window.location.href = '/';
+            
+            return response.data;
           }
           return response.data;
         } catch (backendError) {
+          console.error('Backend API error:', backendError);
+          
+          // Try a direct call to bypass any API issues
+          try {
+            const directResponse = await axios({
+              method: 'post',
+              url: `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/auth/google`,
+              data: userData,
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            });
+            
+            if (directResponse.data.token) {
+              localStorage.setItem('token', directResponse.data.token);
+              localStorage.setItem('user', JSON.stringify(directResponse.data.user));
+              
+              // Automatically redirect to home page
+              window.location.href = '/';
+              
+              return directResponse.data;
+            }
+          } catch (directError) {
+            console.error('Direct API call also failed:', directError);
+          }
+          
           // Fallback to client-side session
-          console.warn('Backend API error, creating client-side session:', backendError);
+          console.warn('Creating client-side session as fallback');
           
           const mockUser = {
             _id: userData.googleId,
@@ -73,6 +106,9 @@ const AuthService = {
           
           localStorage.setItem('token', 'google-auth-token');
           localStorage.setItem('user', JSON.stringify(mockUser));
+          
+          // Automatically redirect to home page
+          window.location.href = '/';
           
           return { user: mockUser, token: 'google-auth-token' };
         }
@@ -123,11 +159,42 @@ const AuthService = {
         if (response.data.token) {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('user', JSON.stringify(response.data.user));
+          
+          // Automatically redirect to home page
+          window.location.href = '/';
+          
+          return response.data;
         }
         return response.data;
       } catch (backendError) {
+        console.error('Backend API error during redirect handling:', backendError);
+        
+        // Try a direct call to bypass any API issues
+        try {
+          const directResponse = await axios({
+            method: 'post',
+            url: `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/auth/google`,
+            data: userData,
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          
+          if (directResponse.data.token) {
+            localStorage.setItem('token', directResponse.data.token);
+            localStorage.setItem('user', JSON.stringify(directResponse.data.user));
+            
+            // Redirect to home page
+            window.location.href = '/';
+            
+            return directResponse.data;
+          }
+        } catch (directError) {
+          console.error('Direct API call also failed during redirect handling:', directError);
+        }
+        
         // Fallback to client-side session
-        console.warn('Backend API error, creating client-side session:', backendError);
+        console.warn('Creating client-side session for redirect result');
         
         const mockUser = {
           _id: userData.googleId,
@@ -140,6 +207,9 @@ const AuthService = {
         
         localStorage.setItem('token', 'google-auth-token');
         localStorage.setItem('user', JSON.stringify(mockUser));
+        
+        // Redirect to home page
+        window.location.href = '/';
         
         return { user: mockUser, token: 'google-auth-token' };
       }
@@ -223,9 +293,8 @@ const AuthService = {
   forgotPassword: async (email) => {
     try {
       console.log('AuthService: Sending forgot password request for email:', email);
-      // Use direct axios to avoid any issues with interceptors
-      const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-      const response = await axios.post(`${baseUrl}/api/auth/forgot-password`, { email });
+      // Use our API wrapper instead of direct axios call
+      const response = await API.post('/auth/forgot-password', { email });
       console.log('AuthService: Forgot password response:', response.data);
       return response.data;
     } catch (error) {
@@ -250,13 +319,13 @@ const AuthService = {
         new Error('Network error');
     }
   },
-
-  // Reset password
+  
+  // Reset password with token
   resetPassword: async (token, password) => {
     try {
       console.log('AuthService: Resetting password with token');
       const response = await API.post(`/auth/reset-password/${token}`, { password });
-      console.log('AuthService: Password reset response:', response.data);
+      console.log('AuthService: Password reset successful');
       return response.data;
     } catch (error) {
       console.error('AuthService: Password reset error:', error.response?.data || error.message);
