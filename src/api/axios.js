@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Use environment variable for API URL with explicit fallback to the deployed API
-const API_URL = process.env.REACT_APP_API_URL || 'https://taekwondo-website-backend.onrender.com';
+// Hard-code API URL to ensure proper connection to backend
+const API_URL = 'https://taekwondo-website-backend.onrender.com';
 
 // Log the API URL being used
 console.log('API URL being used:', API_URL);
@@ -11,10 +11,12 @@ const API = axios.create({
   baseURL: `${API_URL}/api`,
   headers: {
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Origin': window.location.origin
   },
   // Adding timeout for cloud database connections
   timeout: 60000, // 60 seconds - increased from 30 seconds
-  withCredentials: true // Enable sending cookies in cross-origin requests
+  withCredentials: false // Disable credentials for now until CORS is fixed
 });
 
 // Add a request interceptor to attach the auth token to requests
