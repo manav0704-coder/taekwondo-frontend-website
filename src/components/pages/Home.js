@@ -182,32 +182,33 @@ const Home = () => {
             <div 
               key={index}
               className={`carousel-slide ${index === currentSlide ? 'active' : ''}`}
-          style={{ 
+              style={{ 
                 backgroundImage: `url(${slide.image})`,
                 opacity: index === currentSlide ? 1 : 0,
-                transition: 'opacity 0.8s ease-in-out'
+                transition: 'opacity 0.8s ease-in-out',
+                paddingTop: '3rem' // Add padding to ensure content isn't covered by navbar
               }}
             >
               {/* Overlay for better text visibility */}
               <div className="overlay"></div>
               
-              {/* Slide Content - Positioned at bottom left */}
+              {/* Slide Content - Positioned at bottom left with more margin from top */}
               <div className="carousel-content-wrapper">
                 <div className="carousel-content">
                   <h1>{slide.title}</h1>
                   <p className="subtitle">"{slide.subtitle}"</p>
                   <p className="description">
                     {slide.description}
-            </p>
+                  </p>
                   <div className="carousel-buttons">
-              <Link to="/programs" className="btn btn-primary">
-                Explore Programs
-              </Link>
-              <Link to="/contact" className="btn btn-outline">
-                Contact Us
-              </Link>
-            </div>
-          </div>
+                    <Link to="/programs" className="btn btn-primary">
+                      Explore Programs
+                    </Link>
+                    <Link to="/contact" className="btn btn-outline">
+                      Contact Us
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
