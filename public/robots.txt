@@ -1,9 +1,31 @@
 # https://www.robotstxt.org/robotstxt.html
+# ALL Maharashtra Taekwondo Association Website
+
+# Allow all crawlers
 User-agent: *
 Allow: /
+Allow: /programs
+Allow: /events
+Allow: /gallery
+Allow: /about
+Allow: /contact
+Allow: /enroll
 
 # Disallow sensitive routes
 Disallow: /profile
 Disallow: /admin
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /api/
 
+# Crawl delay for heavy bots
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+# Sitemap location
 Sitemap: https://taekwondo-frontend.onrender.com/sitemap.xml

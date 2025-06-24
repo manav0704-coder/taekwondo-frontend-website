@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import logo from '../../assets/images/logo.png';
-import { FaUserCircle, FaSignOutAlt, FaUserCog } from 'react-icons/fa';
+import { FaUserCircle, FaSignOutAlt, FaUserCog, FaHome, FaBookOpen, FaCalendarAlt, FaImages, FaInfoCircle, FaEnvelope } from 'react-icons/fa';
 
 // Add keyframes for animations
 const animations = `
@@ -297,44 +297,58 @@ const Header = () => {
           }`}
         >
           <div className="p-5 flex flex-col h-full">
-            <div className="flex justify-between items-center mb-6">
-              <Link to="/" onClick={() => setIsSidebarOpen(false)} className="flex items-center">
-                <img src={logo} alt="AMTA Logo" className="h-12 w-auto object-contain logo" />
-              </Link>
-              <button 
-                onClick={() => setIsSidebarOpen(false)} 
-                className="p-1.5 rounded-md hover:bg-secondary-600 focus:outline-none"
-                aria-label="Close menu"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              </button>
+            <div className="mb-6">
+              <div className="flex justify-between items-center">
+                <Link to="/" onClick={() => setIsSidebarOpen(false)}>
+                  <img 
+                    src={logo} 
+                    alt="AMTA Logo" 
+                    className="h-10 w-auto object-contain" 
+                  />
+                </Link>
+                <button 
+                  onClick={() => setIsSidebarOpen(false)} 
+                  className="p-1.5 rounded-md hover:bg-secondary-600 focus:outline-none"
+                  aria-label="Close menu"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </button>
+              </div>
             </div>
 
+            {/* Mobile Navigation Links */}
             <div className="space-y-1 mb-6">
               {[
-                { path: '/', label: 'Home' },
-                { path: '/programs', label: 'Programs' },
-                { path: '/events', label: 'Events' },
-                { path: '/gallery', label: 'Gallery' },
-                { path: '/about', label: 'About' },
-                { path: '/contact', label: 'Contact' },
+                { path: '/', label: 'Home', icon: <FaHome className="mr-3 text-gray-400" /> },
+                { path: '/programs', label: 'Programs', icon: <FaBookOpen className="mr-3 text-gray-400" /> },
+                { path: '/events', label: 'Events', icon: <FaCalendarAlt className="mr-3 text-gray-400" /> },
+                { path: '/gallery', label: 'Gallery', icon: <FaImages className="mr-3 text-gray-400" /> },
+                { path: '/about', label: 'About', icon: <FaInfoCircle className="mr-3 text-gray-400" /> },
+                { path: '/contact', label: 'Contact', icon: <FaEnvelope className="mr-3 text-gray-400" /> },
               ].map((item) => (
                 <Link 
                   key={item.path}
                   to={item.path} 
-                  className={`block px-3 py-2 rounded-md transition-colors ${
+                  className={`flex items-center px-3 py-2 rounded-md transition-colors ${
                     isActiveRoute(item.path) 
                       ? 'bg-primary text-white' 
                       : 'text-white hover:bg-secondary-600'
                   }`}
                 >
+                  {isActiveRoute(item.path) ? 
+                    React.cloneElement(item.icon, { className: "mr-3 text-white" }) : 
+                    item.icon}
                   {item.label}
                 </Link>
               ))}
             </div>
 
+            {/* Divider Line */}
+            <div className="h-px bg-gradient-to-r from-transparent via-gray-500 to-transparent opacity-30 my-2"></div>
+
+            {/* Mobile Account Section */}
             <div className="mt-auto space-y-2">
               <div className="border-t border-gray-700 pt-4">
                 <button

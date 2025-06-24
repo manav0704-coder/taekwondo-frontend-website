@@ -182,6 +182,129 @@ header nav a:hover {
   }
 }
 
+/* Mobile Sidebar Styling */
+.fixed.right-0.z-50 {
+  background: linear-gradient(to bottom, #343A40, #292e33) !important;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Mobile Sidebar Header */
+.fixed.right-0.z-50 .mb-6 {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
+}
+
+.fixed.right-0.z-50 .flex.justify-between.items-center {
+  padding: 0 0.5rem;
+  display: flex;
+  align-items: center;
+  background: transparent !important;
+}
+
+/* Sidebar logo */
+.fixed.right-0.z-50 .flex.justify-between.items-center img {
+  height: 80px !important;
+  width: auto;
+  margin-left: -5px;
+}
+
+/* Close button alignment */
+.fixed.right-0.z-50 button[aria-label="Close menu"] {
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: -5px;
+}
+
+/* Mobile Sidebar Navigation Links */
+.fixed.right-0.z-50 .space-y-1 {
+  margin-top: 0.5rem;
+}
+
+.fixed.right-0.z-50 .space-y-1 a {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1.25rem !important;
+  font-size: 1.1rem !important;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+  margin: 0.25rem 0;
+}
+
+.fixed.right-0.z-50 .space-y-1 a:hover:not(.bg-primary) {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-left: 3px solid rgba(255, 107, 53, 0.6) !important;
+}
+
+.fixed.right-0.z-50 .space-y-1 a.bg-primary {
+  border-left: 3px solid #ff6b35 !important;
+  font-weight: 600;
+}
+
+/* Mobile Sidebar Account Section */
+.fixed.right-0.z-50 .border-t.border-gray-700 {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  padding-top: 1rem !important;
+  margin-top: 1rem !important;
+}
+
+.fixed.right-0.z-50 button.px-3.py-2 {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  padding: 0.75rem 1.25rem !important;
+}
+
+.fixed.right-0.z-50 button.px-3.py-2:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Enroll Button in Sidebar */
+.fixed.right-0.z-50 a.block.w-full.bg-primary {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  padding: 0.75rem !important;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3) !important;
+  border-radius: 0.375rem !important;
+  transition: all 0.3s ease;
+  margin-top: 1.5rem !important;
+}
+
+.fixed.right-0.z-50 a.block.w-full.bg-primary:hover {
+  background-color: #e55520 !important;
+  box-shadow: 0 6px 16px rgba(255, 107, 53, 0.4) !important;
+  transform: translateY(-1px);
+}
+
+/* Mobile Sidebar Account Dropdown */
+.fixed.right-0.z-50 .bg-secondary-dark {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  border-radius: 0.375rem;
+  margin-top: 0.5rem !important;
+  overflow: hidden;
+}
+
+.fixed.right-0.z-50 .px-4.py-2.border-b.border-gray-700 {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 0.75rem 1rem !important;
+}
+
+.fixed.right-0.z-50 .bg-secondary-dark a {
+  padding: 0.75rem 1.25rem !important;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.fixed.right-0.z-50 .bg-secondary-dark a:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
 /* Buttons */
 .btn {
   display: inline-block;

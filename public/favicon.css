@@ -1,0 +1,21 @@
+/* Favicon styling */
+link[rel="icon"] {
+  width: 60px !important;
+  height: 60px !important;
+}
+
+/* For Microsoft Edge */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  link[rel="icon"] {
+    width: 48px !important;
+    height: 48px !important;
+  }
+}
+
+/* For Chrome, Safari, and Firefox */
+@media screen and (min-resolution: 192dpi) {
+  link[rel="icon"] {
+    width: 48px !important;
+    height: 48px !important;
+  }
+} 
