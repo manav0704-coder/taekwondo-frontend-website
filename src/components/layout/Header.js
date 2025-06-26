@@ -52,7 +52,21 @@ const Header = () => {
   const userDropdownRef = useRef(null);
   const accountDropdownRef = useRef(null);
   
-  // We don't need headerOpacity state anymore since we're using fixed opacity
+  // Listen for app-storage-update events
+  useEffect(() => {
+    const handleStorageUpdate = () => {
+      // Silent refresh of component state when auth changes
+      forceUpdate({});
+    };
+    
+    window.addEventListener('app-storage-update', handleStorageUpdate);
+    return () => {
+      window.removeEventListener('app-storage-update', handleStorageUpdate);
+    };
+  }, []);
+
+  // Force re-render when needed without excessive logging
+  const [, forceUpdate] = useState({});
 
   // Close sidebar when ESC key is pressed
   useEffect(() => {
@@ -156,7 +170,7 @@ const Header = () => {
                 <img 
                   src={logo} 
                   alt="AMTA Logo" 
-                  className="h-12 md:h-14 w-auto object-contain logo" 
+                  className="h-12 md:h-28 w-auto object-contain logo" 
                 />
               </Link>
             </div>
@@ -296,7 +310,7 @@ const Header = () => {
             isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
-          <div className="p-5 flex flex-col h-full">
+          <div className="p-5 flex flex-col h-full overflow-y-auto">
             <div className="mb-6">
               <div className="flex justify-between items-center">
                 <Link to="/" onClick={() => setIsSidebarOpen(false)}>

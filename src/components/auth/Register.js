@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { FcGoogle } from 'react-icons/fc';
+import { toast } from 'react-toastify';
+import AuthService from '../../api/authService';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -15,9 +17,8 @@ const Register = () => {
   const [submitError, setSubmitError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  const [showConfigError, setShowConfigError] = useState(false);
 
-  const { register, registerWithGoogle } = useAuth();
+  const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -96,61 +97,53 @@ const Register = () => {
   };
 
   const handleGoogleSignIn = async () => {
-    setIsGoogleLoading(true);
-    setSubmitError('');
-    setShowConfigError(false);
-    
     try {
-      await registerWithGoogle();
-      // Google Auth now handles redirect in the authService
-    } catch (error) {
-      console.error('Google sign-in error in Register.js:', error);
+      setIsLoading(true);
+      setIsGoogleLoading(true);
       
-      // Format error message for display
-      let errorMessage = error.message || 'Failed to sign in with Google. Please try again.';
-      
-      // Clean up Firebase error messages for better user experience
-      if (errorMessage.includes('Firebase:')) {
-        errorMessage = errorMessage.split('Firebase:')[1].trim();
-      }
-      
-      if (errorMessage.includes('auth/') || errorMessage.includes('Error (auth/')) {
-        // Extract error code from message pattern like "Error (auth/popup-closed-by-user)."
-        const codeMatch = errorMessage.match(/\(auth\/([^)]+)\)/);
-        if (codeMatch && codeMatch[1]) {
-          const errorCode = codeMatch[1];
-          switch (errorCode) {
-            case 'popup-blocked':
-              errorMessage = 'Sign-in popup was blocked. Please allow popups for this site.';
-              break;
-            case 'popup-closed-by-user':
-              errorMessage = 'Sign-in was cancelled. Please try again.';
-              break;
-            case 'cancelled-popup-request':
-              errorMessage = 'Sign-in was cancelled. Please try again.';
-              break;
-            case 'account-exists-with-different-credential':
-              errorMessage = 'An account already exists with the same email address but different sign-in credentials.';
-              break;
-            case 'invalid-credential':
-              errorMessage = 'The sign-in credential is invalid. Please try again.';
-              break;
-            case 'operation-not-allowed':
-              errorMessage = 'Google sign-in is not enabled for this application.';
-              setShowConfigError(true);
-              break;
-            case 'user-disabled':
-              errorMessage = 'This user account has been disabled.';
-              break;
-            default:
-              errorMessage = `Authentication error: ${errorCode}`;
-          }
+      // Show a loading toast
+      const pendingToast = toast.info(
+        <div className="flex items-center">
+          <div className="animate-spin mr-2 h-4 w-4 border-2 border-primary border-t-transparent rounded-full"></div>
+          <span>Initializing sign in...</span>
+        </div>,
+        {
+          autoClose: false,
+          hideProgressBar: false,
+          closeButton: false
         }
-      }
+      );
       
-      setSubmitError(errorMessage);
+      // Try direct authentication
+      const result = await AuthService.registerWithGoogle();
+      
+      // Close the pending toast
+      toast.dismiss(pendingToast);
+      
+      // If we got a result back, user was authenticated
+      if (result && result.user) {
+        // Show success message
+        toast.success(`Welcome, ${result.user.name}!`, {
+          position: "top-right",
+          autoClose: 3000
+        });
+        
+        // Navigate to home page after successful registration
+        navigate('/');
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setIsGoogleLoading(false);
+      console.error('Authentication error:', error);
+      
+      // Show error toast
+      toast.error(error.message || 'Authentication failed. Please try again or use email registration.', {
+        position: "top-right",
+        autoClose: 5000
+      });
     } finally {
       setIsGoogleLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -191,11 +184,6 @@ const Register = () => {
                 </div>
                 <div className="ml-3">
                   <p className="text-sm text-red-700 font-medium">{submitError}</p>
-                  {showConfigError && (
-                    <p className="text-xs text-red-600 mt-1">
-                      The Firebase API key needs to be configured in the project. Please see the firebase/config.js file.
-                    </p>
-                  )}
                 </div>
               </div>
             </div>

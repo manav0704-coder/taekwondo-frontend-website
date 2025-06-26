@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useNotification } from '../../context/NotificationContext';
 import { toast } from 'react-toastify';
+import GoogleAuth from './GoogleAuth';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -134,6 +135,14 @@ const Login = () => {
     }
   };
 
+  const handleGoogleSuccess = (user) => {
+    // Show welcome notification
+    showWelcomeNotification(user.name);
+    
+    // Navigate to the redirect path after successful login
+    navigate(from, { replace: true });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-secondary-50 to-white flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -175,6 +184,20 @@ const Login = () => {
               </div>
             </div>
           ) : null}
+
+          {/* Google Sign In Button */}
+          <div className="mb-6">
+            <GoogleAuth onSuccess={handleGoogleSuccess} />
+          </div>
+
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">Or sign in with email</span>
+            </div>
+          </div>
 
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>

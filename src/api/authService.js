@@ -1,7 +1,25 @@
 import API from './axios';
-import axios from 'axios';
-import { googleProvider } from '../firebase/config';
-import { signInWithPopup, getAuth, getRedirectResult } from 'firebase/auth';
+import { auth, googleProvider } from '../firebase/config';
+import { signInWithPopup, getAuth } from 'firebase/auth';
+
+// A helper function to set user data in localStorage and dispatch events
+const updateAuthStorage = (token, userData) => {
+  localStorage.setItem('token', token);
+  localStorage.setItem('user', JSON.stringify(userData));
+  
+  // Dispatch events to notify components about authentication changes
+  try {
+    // Standard event for cross-tab communication
+    window.dispatchEvent(new StorageEvent('storage', {
+      key: 'token'
+    }));
+    
+    // Custom event for this app
+    window.dispatchEvent(new Event('app-storage-update'));
+  } catch (error) {
+    console.error('Error dispatching storage events:', error);
+  }
+};
 
 // Service for handling authentication-related API calls
 const AuthService = {
@@ -10,8 +28,7 @@ const AuthService = {
     try {
       const response = await API.post('/auth/register', userData);
       if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
+        updateAuthStorage(response.data.token, response.data.user);
       }
       return response.data;
     } catch (error) {
@@ -21,201 +38,116 @@ const AuthService = {
     }
   },
 
-  // Register with Google
+  // Register with Google - Main method for Google authentication
   registerWithGoogle: async () => {
     try {
-      // Reinitialize auth to ensure we have fresh credentials
-      const currentAuth = getAuth();
+      console.log('Starting Google authentication process');
       
-      // Set custom parameters for the auth provider
-      googleProvider.setCustomParameters({
-        // Force account selection
-        prompt: 'select_account'
-      });
+      // Make sure auth is available and configured
+      const currentAuth = auth || getAuth();
       
-      // Try popup method first
-      try {
-        const result = await signInWithPopup(currentAuth, googleProvider);
-        
-        if (!result || !result.user) {
-          throw new Error('Failed to authenticate with Google. Please try again.');
-        }
-        
-        // Google user data
-        const userData = {
-          name: result.user.displayName,
-          email: result.user.email,
-          googleId: result.user.uid,
-          role: 'user',
-          photoURL: result.user.photoURL || ''
-        };
-        
-        console.log('Google authentication successful, sending data to backend:', userData);
-        
-        // Register or login with the backend
-        try {
-          const response = await API.post('/auth/google', userData);
-          if (response.data.token) {
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
-            
-            // Automatically redirect to home page after successful Google login
-            window.location.href = '/';
-            
-            return response.data;
-          }
-          return response.data;
-        } catch (backendError) {
-          console.error('Backend API error:', backendError);
-          
-          // Try a direct call to bypass any API issues
-          try {
-            const directResponse = await axios({
-              method: 'post',
-              url: `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/auth/google`,
-              data: userData,
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            });
-            
-            if (directResponse.data.token) {
-              localStorage.setItem('token', directResponse.data.token);
-              localStorage.setItem('user', JSON.stringify(directResponse.data.user));
-              
-              // Automatically redirect to home page
-              window.location.href = '/';
-              
-              return directResponse.data;
-            }
-          } catch (directError) {
-            console.error('Direct API call also failed:', directError);
-          }
-          
-          // Fallback to client-side session
-          console.warn('Creating client-side session as fallback');
-          
-          const mockUser = {
-            _id: userData.googleId,
-            name: userData.name,
-            email: userData.email,
-            role: 'user',
-            status: 'active',
-            createdAt: new Date().toISOString()
-          };
-          
-          localStorage.setItem('token', 'google-auth-token');
-          localStorage.setItem('user', JSON.stringify(mockUser));
-          
-          // Automatically redirect to home page
-          window.location.href = '/';
-          
-          return { user: mockUser, token: 'google-auth-token' };
-        }
-      } catch (popupError) {
-        console.error('Google sign-in popup error:', popupError);
-        
-        // Handle specific errors
-        if (popupError.code === 'auth/popup-blocked') {
-          throw new Error('Popup was blocked by your browser. Please allow popups for this site or try again.');
-        }
-        
-        if (popupError.code === 'auth/popup-closed-by-user' || 
-            popupError.code === 'auth/cancelled-popup-request') {
-          throw new Error('Sign-in was cancelled. Please try again.');
-        }
-        
-        throw new Error(`Google sign-in failed: ${popupError.message || 'Unknown error'}`);
-      }
-    } catch (error) {
-      console.error('Google sign-in error:', error);
-      throw new Error(error.message || 'Google sign-in failed. Please try again.');
-    }
-  },
-
-  // Handle redirect result for Google auth
-  handleRedirectResult: async () => {
-    try {
-      const auth = getAuth();
-      const result = await getRedirectResult(auth);
-      
-      if (!result) {
-        // No redirect result, user might not have been redirected yet
-        return null;
+      if (!googleProvider || !currentAuth) {
+        console.error('Firebase authentication is not properly initialized');
+        throw new Error('Google authentication is not available. Please try again later.');
       }
       
-      // Google user data
+      console.log('Opening Google sign-in popup...');
+      const result = await signInWithPopup(currentAuth, googleProvider);
+      
+      if (!result || !result.user) {
+        throw new Error('Failed to authenticate with Google');
+      }
+      
+      // Get the ID token for server verification
+      const idToken = await result.user.getIdToken();
+      
+      // Create user data object from Google profile
       const userData = {
-        name: result.user.displayName,
+        name: result.user.displayName || 'User',
         email: result.user.email,
-        googleId: result.user.uid,
         role: 'user',
+        googleId: result.user.uid,
         photoURL: result.user.photoURL || ''
       };
       
-      // Complete the authentication process
+      console.log('Google authentication successful, sending to backend');
+      
+      // Send user data to backend
       try {
-        const response = await API.post('/auth/google', userData);
+        const response = await API.post('/auth/google', {
+          ...userData,
+          idToken
+        });
+        
         if (response.data.token) {
-          localStorage.setItem('token', response.data.token);
-          localStorage.setItem('user', JSON.stringify(response.data.user));
-          
-          // Automatically redirect to home page
-          window.location.href = '/';
-          
-          return response.data;
+          updateAuthStorage(response.data.token, response.data.user);
         }
+        
         return response.data;
       } catch (backendError) {
-        console.error('Backend API error during redirect handling:', backendError);
+        console.error('Backend API error:', backendError);
         
-        // Try a direct call to bypass any API issues
-        try {
-          const directResponse = await axios({
-            method: 'post',
-            url: `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/auth/google`,
-            data: userData,
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
-          
-          if (directResponse.data.token) {
-            localStorage.setItem('token', directResponse.data.token);
-            localStorage.setItem('user', JSON.stringify(directResponse.data.user));
-            
-            // Redirect to home page
-            window.location.href = '/';
-            
-            return directResponse.data;
-          }
-        } catch (directError) {
-          console.error('Direct API call also failed during redirect handling:', directError);
-        }
-        
-        // Fallback to client-side session
-        console.warn('Creating client-side session for redirect result');
-        
-        const mockUser = {
+        // Create fallback authentication if backend fails
+        const fallbackUser = {
           _id: userData.googleId,
           name: userData.name,
           email: userData.email,
           role: 'user',
           status: 'active',
-          createdAt: new Date().toISOString()
+          createdAt: new Date().toISOString(),
+          photoURL: userData.photoURL
         };
         
-        localStorage.setItem('token', 'google-auth-token');
-        localStorage.setItem('user', JSON.stringify(mockUser));
+        updateAuthStorage('google-auth-token', fallbackUser);
         
-        // Redirect to home page
-        window.location.href = '/';
-        
-        return { user: mockUser, token: 'google-auth-token' };
+        return { user: fallbackUser, token: 'google-auth-token' };
       }
     } catch (error) {
-      console.error('Error handling redirect result:', error);
-      return null;
+      console.error('Google authentication error:', error);
+      
+      if (error.code === 'auth/configuration-not-found') {
+        throw new Error('Google Sign-In is not enabled in Firebase. Please enable it in the Firebase console.');
+      }
+      
+      if (error.code === 'auth/popup-closed-by-user') {
+        throw new Error('Sign-in window was closed. Please try again.');
+      }
+      
+      throw error;
+    }
+  },
+
+  // Process Google ID token from direct sign-in
+  processGoogleToken: async (idToken, userData) => {
+    try {
+      // Send data to backend
+      const response = await API.post('/auth/google', {
+        ...userData,
+        idToken
+      });
+      
+      if (response.data.token) {
+        updateAuthStorage(response.data.token, response.data.user);
+      }
+      
+      return response.data;
+    } catch (error) {
+      console.error('Failed to process Google token:', error);
+      
+      // Create fallback authentication if backend fails
+      const fallbackUser = {
+        _id: userData.googleId,
+        name: userData.name,
+        email: userData.email,
+        role: 'user',
+        status: 'active',
+        createdAt: new Date().toISOString(),
+        photoURL: userData.photoURL || ''
+      };
+      
+      updateAuthStorage('google-auth-token-temporary', fallbackUser);
+      
+      return { user: fallbackUser, token: 'google-auth-token-temporary' };
     }
   },
 
@@ -224,8 +156,7 @@ const AuthService = {
     try {
       const response = await API.post('/auth/login', credentials);
       if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
+        updateAuthStorage(response.data.token, response.data.user);
       }
       return response.data;
     } catch (error) {
@@ -238,12 +169,27 @@ const AuthService = {
   // Logout the current user
   logout: async () => {
     try {
+      // First, attempt to sign out from Firebase if auth is available
+      if (auth) {
+        console.log('Signing out from Firebase');
+        await auth.signOut().catch(err => console.error('Firebase signout error:', err));
+      }
+
+      // Then call the backend API
       await API.post('/auth/logout');
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
+      // Always clear local storage, even if API or Firebase fails
+      console.log('Clearing local storage');
       localStorage.removeItem('token');
       localStorage.removeItem('user');
+      
+      // Dispatch events for logout as well
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'token'
+      }));
+      window.dispatchEvent(new Event('app-storage-update'));
     }
   },
 
