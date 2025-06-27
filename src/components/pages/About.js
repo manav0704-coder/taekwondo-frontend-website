@@ -10,6 +10,7 @@ import master3Img from '../../assets/images/master-3.jpg';
 import master4Img from '../../assets/images/master-4.jpg';
 import master5Img from '../../assets/images/master-5.jpg';
 import master6Img from '../../assets/images/master-6.jpg';
+import mainMasterImg from '../../assets/images/main-master.jpg';
 import heroImg from '../../assets/images/programs-hero.jpg';
 
 const About = () => {
@@ -49,8 +50,23 @@ const About = () => {
     }
   ];
 
-  // Team members data - Prajakta Jagtap and Akshada Harke moved to the top
+  // Team members data - Neha Diwate, Prajakta Jagtap and Akshada Harke moved to the top
   const teamMembers = [
+    {
+      id: 7,
+      name: "Neha Diwate",
+      title: "International Player",
+      rank: "Black Belt",
+      bio: "Neha Diwate is an accomplished international player with extensive experience in competitive Taekwondo. Her remarkable record includes 7 international matches resulting in 7 Gold, 1 Silver, and 1 Bronze medals. At the national level, she has participated in 25 competitions, earning an impressive 25 Gold medals. Her exceptional competitive record and dedication make her an inspiration to students across all branches.",
+      image: mainMasterImg,
+      imagePosition: "center center",
+      achievements: [
+        "7 International Matches - 7 Gold, 1 Silver, 1 Bronze",
+        "25 National Competitions - 25 Gold",
+        "International Player",
+        "Elite Tournament Specialist"
+      ]
+    },
     {
       id: 5,
       name: "Prajakta Jagtap",
