@@ -28,4 +28,4 @@ User-agent: SemrushBot
 Crawl-delay: 10
 
 # Sitemap location
-Sitemap: https://taekwondo-frontend.onrender.com/sitemap.xml
+Sitemap: https://hibrontkd.com/sitemap.xml
