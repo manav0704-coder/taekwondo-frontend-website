@@ -5,77 +5,77 @@
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
-    <loc>https://taekwondo-frontend.onrender.com/</loc>
+    <loc>https://hibrontkd.com/</loc>
     <lastmod>2023-10-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://taekwondo-frontend.onrender.com/logo512.png</image:loc>
+      <image:loc>https://hibrontkd.com/logo512.png</image:loc>
       <image:title>ALL Maharashtra Taekwondo Association</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://taekwondo-frontend.onrender.com/programs</loc>
+    <loc>https://hibrontkd.com/programs</loc>
     <lastmod>2023-10-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://taekwondo-frontend.onrender.com/events</loc>
+    <loc>https://hibrontkd.com.com/events</loc>
     <lastmod>2023-10-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://taekwondo-frontend.onrender.com/about</loc>
+    <loc>https://hibrontkd.com/about</loc>
     <lastmod>2023-10-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://taekwondo-frontend.onrender.com/contact</loc>
+    <loc>https://hibrontkd.com/contact</loc>
     <lastmod>2023-10-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://taekwondo-frontend.onrender.com/gallery</loc>
+    <loc>https://hibrontkd.com/gallery</loc>
     <lastmod>2023-10-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://taekwondo-frontend.onrender.com/login</loc>
+    <loc>https://hibrontkd.com/login</loc>
     <lastmod>2023-10-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://taekwondo-frontend.onrender.com/register</loc>
+    <loc>https://hibrontkd.com/register</loc>
     <lastmod>2023-10-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://taekwondo-frontend.onrender.com/enroll</loc>
+    <loc>https://hibrontkd.com/enroll</loc>
     <lastmod>2023-10-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://taekwondo-frontend.onrender.com/privacy-policy</loc>
+    <loc>https://hibrontkd.com/privacy-policy</loc>
     <lastmod>2023-10-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://taekwondo-frontend.onrender.com/terms-and-conditions</loc>
+    <loc>https://hibrontkd.com/terms-and-conditions</loc>
     <lastmod>2023-10-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://taekwondo-frontend.onrender.com/cookie-policy</loc>
+    <loc>https://hibrontkd.com/cookie-policy</loc>
     <lastmod>2023-10-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
