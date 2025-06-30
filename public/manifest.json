@@ -3,14 +3,14 @@
   "name": "ALL Maharashtra Taekwondo Association",
   "icons": [
     {
-      "src": "images/logo.png",
+      "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/png"
+      "type": "image/x-icon"
     },
     {
       "src": "images/logo.png",
       "type": "image/png",
-      "sizes": "1000x1000"
+      "sizes": "192x192"
     },
     {
       "src": "images/logo.png",

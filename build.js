@@ -6,6 +6,7 @@ const path = require('path');
 process.env.GENERATE_SOURCEMAP = 'false';
 
 console.log('🚀 Starting build process...');
+console.log('🔧 Environment:', process.env.NODE_ENV || 'development');
 
 // Run the build command
 try {
@@ -27,13 +28,19 @@ try {
     console.log('✅ Created _redirects file in build directory.');
   }
 
-  // Create a robots.txt file if it doesn't exist
+  // Check if robots.txt exists in public directory and copy it to build
+  const robotsSource = path.join(__dirname, 'public', 'robots.txt');
   const robotsTarget = path.join(__dirname, 'build', 'robots.txt');
-  if (!fs.existsSync(robotsTarget)) {
-    console.log('📋 Creating robots.txt file...');
+  
+  if (fs.existsSync(robotsSource)) {
+    console.log('📋 Copying robots.txt file...');
+    fs.copyFileSync(robotsSource, robotsTarget);
+    console.log('✅ robots.txt file copied successfully!');
+  } else if (!fs.existsSync(robotsTarget)) {
+    console.log('⚠️ Warning: robots.txt file not found. Creating one...');
     fs.writeFileSync(
       robotsTarget,
-      'User-agent: *\nAllow: /\nSitemap: https://taekwondo-frontend.onrender.com/sitemap.xml'
+      'User-agent: *\nAllow: /\nSitemap: https://hibrontkd.com/sitemap.xml'
     );
     console.log('✅ Created robots.txt file in build directory.');
   }

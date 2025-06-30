@@ -10,6 +10,12 @@ Allow: /gallery
 Allow: /about
 Allow: /contact
 Allow: /enroll
+Allow: /favicon.ico
+
+# Specifically allow Bingbot
+User-agent: Bingbot
+Allow: /
+Allow: /favicon.ico
 
 # Disallow sensitive routes
 Disallow: /profile
