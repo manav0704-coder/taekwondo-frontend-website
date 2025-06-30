@@ -1,37 +1,35 @@
 # https://www.robotstxt.org/robotstxt.html
 # ALL Maharashtra Taekwondo Association Website
 
-# Allow all crawlers
+# ==========================
+# General Access Rules
+# ==========================
 User-agent: *
 Allow: /
-Allow: /programs
-Allow: /events
-Allow: /gallery
-Allow: /about
-Allow: /contact
-Allow: /enroll
-Allow: /favicon.ico
-
-# Specifically allow Bingbot
-User-agent: Bingbot
-Allow: /
-Allow: /favicon.ico
-
-# Disallow sensitive routes
-Disallow: /profile
 Disallow: /admin
+Disallow: /profile
 Disallow: /login
 Disallow: /register
 Disallow: /forgot-password
 Disallow: /reset-password
 Disallow: /api/
 
-# Crawl delay for heavy bots
+# ==========================
+# Specific Bot Rules
+# ==========================
+
+# Bingbot - explicitly allowed (optional but fine)
+User-agent: Bingbot
+Allow: /
+
+# Set crawl delay for heavy bots
 User-agent: AhrefsBot
 Crawl-delay: 10
 
 User-agent: SemrushBot
 Crawl-delay: 10
 
-# Sitemap location
+# ==========================
+# Sitemap Declaration
+# ==========================
 Sitemap: https://hibrontkd.com/sitemap.xml
