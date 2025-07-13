@@ -56,7 +56,7 @@ const About = () => {
       id: 7,
       name: "Neha Diwate",
       title: "International Player",
-      rank: "Black Belt",
+      rank: "2 Dan Black Belt",
       bio: "Neha Diwate is an accomplished international player with extensive experience in competitive Taekwondo. Her remarkable record includes 7 international matches resulting in 7 Gold, 1 Silver, and 1 Bronze medals. At the national level, she has participated in 25 competitions, earning an impressive 25 Gold medals. Her exceptional competitive record and dedication make her an inspiration to students across all branches.",
       image: mainMasterImg,
       imagePosition: "center center",
@@ -227,53 +227,73 @@ const About = () => {
   const branchLocations = [
     {
       id: 1,
-      name: "Bhosari Center",
-      address: "123 Taekwondo Way, Bhosari, Pune - 411026",
-      phone: "+91 98765 43210",
-      email: "bhosari@maharashtratkd.org",
-      schedule: "Mon-Sat: 6:00 AM - 9:00 PM, Sun: 8:00 AM - 12:00 PM",
-      description: "Our flagship center in Bhosari features state-of-the-art training facilities including competition-standard mats, electronic scoring equipment, and a specialized training area for advanced practitioners.",
-      instructors: ["Master Sunil Patil (5th Dan)", "Ms. Priya Kulkarni (4th Dan)"]
+      name: "Bhosari Center (Virangula Kendra)",
+      address: "Dhondiba Ganpat Phuge Patil Ground (Virangula Kendra) Dighi road, Bhosari Pune - 39",
+      phone: "9552304407",
+      email: "nehadiwate92@gmail.com",
+      schedule: "Monday to Friday: 6:00 PM to 7:00 PM, Saturday special batch: 6:00 PM to 7:30 PM",
+      description: "Our flagship Bhosari center located at Virangula Kendra provides expert training for beginners and advanced students with a focus on competition preparation.",
+      instructors: ["Neha Diwate"]
     },
     {
       id: 2,
-      name: "Dighi Center",
-      address: "45 Sports Complex, Near MIDC, Dighi, Pune - 411015",
-      phone: "+91 87654 32109",
-      email: "dighi@maharashtratkd.org",
-      schedule: "Mon-Sat: 5:30 AM - 8:30 PM, Sun: Closed",
-      description: "The Dighi center specializes in children's programs and beginner classes, with specially trained instructors for young athletes and a safe, supportive training environment.",
-      instructors: ["Master Rahul Gaikwad (4th Dan)", "Mr. Vijay Sharma (3rd Dan)"]
+      name: "Master Mind Global School Branch",
+      address: "Master Mind Global School Near Vishweshwar Hospital, Chakrapani Vasahat, Bhosari",
+      phone: "9552304407",
+      email: "nehadiwate92@gmail.com",
+      schedule: "Monday to Friday: 7:15 PM to 8:15 PM",
+      description: "Located within the Master Mind Global School facility, this branch offers specialized programs for school students with instruction from multiple experienced trainers.",
+      instructors: ["Neha Diwate", "Sarthak Panchal"]
     },
     {
       id: 3,
-      name: "Moshi Center",
-      address: "78 Gandhi Road, Near Municipal School, Moshi, Pune - 412105",
-      phone: "+91 76543 21098",
-      email: "moshi@maharashtratkd.org",
-      schedule: "Mon-Fri: 6:00 AM - 9:00 PM, Sat-Sun: 7:00 AM - 1:00 PM",
-      description: "Our Moshi branch focuses on competitive training and has produced several state and national champions in recent years with its intensive training programs and experienced coaching staff.",
-      instructors: ["Master Deepak Jadhav (5th Dan)", "Ms. Ashwini Shinde (3rd Dan)"]
+      name: "Dhawade Vasti Branch",
+      address: "Brilliant School, Dhawade Vasti, Bhosari, Pune",
+      phone: "9699656328",
+      email: "premlomte16@gmail.com",
+      schedule: "Monday to Friday: 5:00 PM to 6:00 PM",
+      description: "Our Dhawade Vasti branch at Brilliant School provides convenient after-school training programs for children and beginners focusing on fundamental techniques and character development.",
+      instructors: ["Prem Lomte"]
     },
     {
       id: 4,
-      name: "Shivajinagar Center",
-      address: "25 University Road, Near College of Engineering, Shivajinagar, Pune - 411005",
-      phone: "+91 65432 10987",
-      email: "shivajinagar@maharashtratkd.org",
-      schedule: "Mon-Sat: 7:00 AM - 10:00 PM, Sun: 8:00 AM - 2:00 PM",
-      description: "Located in the heart of the city, our Shivajinagar center caters primarily to university students and young professionals with flexible scheduling and specialized programs.",
-      instructors: ["Master Amit Desai (4th Dan)", "Mr. Kiran Patil (3rd Dan)"]
+      name: "Charoli Branch",
+      address: "Gandharva Park Colony No. 4, Mariyum English Pre School, Charoli Pune - 412105",
+      phone: "9552304407",
+      email: "nehadiwate92@gmail.com",
+      schedule: "Monday to Friday: 7:30 PM to 8:30 PM",
+      description: "The Charoli branch serves the growing community in this area with evening classes designed to accommodate working professionals and school students.",
+      instructors: ["Neha Diwate"]
     },
     {
       id: 5,
-      name: "Pimpri Center",
-      address: "156 Industrial Area, Near Railway Station, Pimpri, Pune - 411018",
-      phone: "+91 54321 09876",
-      email: "pimpri@maharashtratkd.org",
-      schedule: "Mon-Sat: 5:00 AM - 9:00 PM, Sun: 6:00 AM - 12:00 PM",
-      description: "The Pimpri center is our newest facility, equipped with modern training equipment and offering specialized programs including self-defense workshops for women and corporate training sessions.",
-      instructors: ["Master Sunita Pawar (4th Dan)", "Mr. Rajesh Kumar (3rd Dan)"]
+      name: "Moshi Branch",
+      address: "Dnyansagar School, Shikshak Colony, Adarsh Nagar, Moshi - 412105",
+      phone: "9834271004",
+      email: "omkarkusale64@gmail.com",
+      schedule: "Monday to Friday: 6:00 PM to 7:00 PM",
+      description: "Our Moshi branch at Dnyansagar School offers structured training programs with a focus on competitive techniques and physical fitness for all age groups.",
+      instructors: ["Omkar Kusale"]
+    },
+    {
+      id: 6,
+      name: "Krishna Mandir & Shramjivi School Branch",
+      address: "Krishna Mandir, Ajit Gavhane Petrol Pump Backside, Alandi Road, Bhosari - 39 and Shramjivi School",
+      phone: "9545692001",
+      email: "prajaktajagtap7249@gmail.com",
+      schedule: "Krishna Mandir: Monday to Friday: 6:00 PM to 7:00 PM & 7:00 PM to 8:00 PM, Shramjivi School: Monday to Friday: 6:30 PM to 7:30 PM",
+      description: "This dual-location branch offers multiple time slots at two nearby facilities, making training accessible to a wider community with classes catering to different age groups and skill levels.",
+      instructors: ["Prajakta Jagtap", "Prem Lomte"]
+    },
+    {
+      id: 7,
+      name: "Ghavne Vasti Branch",
+      address: "Prabu Ram Chandra Ghavne Vasti, Bhosari Pune - 39",
+      phone: "9552304407",
+      email: "mujahidshaikh0719@gmail.com",
+      schedule: "Monday to Friday: 7:30 PM to 8:30 PM, Saturday special batch: 7:30 PM to 8:30 PM",
+      description: "Our Ghavne Vasti branch offers evening training sessions with specialized weekend classes focusing on advanced techniques and competition preparation.",
+      instructors: ["Mujahid Shaikh"]
     }
   ];
 
